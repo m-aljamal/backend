@@ -2,6 +2,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ProjectModule } from './project/project.module';
+import { EmployeeModule } from './employee/employee.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ProjectModule } from './project/project.module';
       sortSchema: true,
     }),
     ProjectModule,
+    EmployeeModule,
   ],
 })
 export class AppModule {}
