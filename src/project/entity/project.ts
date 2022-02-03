@@ -1,8 +1,10 @@
+import { Employee } from './../../employee/entity/employee';
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -29,4 +31,8 @@ export class Project {
   @UpdateDateColumn({ type: 'timestamp' })
   @Field()
   updatedAt: Date;
+
+  @OneToMany(() => Employee, (employee) => employee.project)
+  @Field(() => [Employee], { nullable: true })
+  employees: Employee[];
 }

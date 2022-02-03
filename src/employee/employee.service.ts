@@ -1,3 +1,5 @@
+import { Project } from 'src/project/entity/project';
+import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
 import { Injectable } from '@nestjs/common';
@@ -8,14 +10,19 @@ import { Repository } from 'typeorm';
 export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
-    private readonly projectRepo: Repository<Employee>,
+    private readonly EmpRepo: Repository<Employee>,
+    private readonly projectService: ProjectService,
   ) {}
 
   async getEmployees(): Promise<Employee[]> {
-    return await this.projectRepo.find();
+    return await this.EmpRepo.find();
   }
 
   async createEmployee(employee: EmployeeDto): Promise<Employee> {
-    return await this.projectRepo.save(employee);
+    return await this.EmpRepo.save(employee);
+  }
+
+  getProject(projectId: string): Promise<Project> {
+    return this.projectService.findOne(projectId);
   }
 }

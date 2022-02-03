@@ -4,4 +4,10 @@ import { Field, InputType } from '@nestjs/graphql';
 export class EmployeeDto {
   @Field()
   name: string;
+
+  @Field()
+  salary: number;
+
+  @Field()
+  projectId: string;
 }

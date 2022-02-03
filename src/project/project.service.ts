@@ -11,10 +11,14 @@ export class ProjectService {
     private readonly projectRepo: Repository<Project>,
   ) {}
   findAll() {
-    return this.projectRepo.find();
+    return this.projectRepo.find({ relations: ['employees'] });
   }
 
   createProject(project: CreateProjectDto) {
     return this.projectRepo.save(project);
+  }
+
+  findOne(id: string) {
+    return this.projectRepo.findOne(id);
   }
 }
