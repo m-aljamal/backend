@@ -1,3 +1,4 @@
+import { DailyDiscount } from './../../daily-discount/entity/daily-discount';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
 import {
@@ -5,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -35,6 +37,10 @@ export class Employee {
   @ManyToOne(() => Project, (project) => project.employees)
   @Field(() => Project)
   project: Project;
+
+  @OneToMany(() => DailyDiscount, (dailyDiscount) => dailyDiscount.employee)
+  @Field(() => [DailyDiscount])
+  dailyDiscounts: DailyDiscount[];
 
   @Column()
   @Field()

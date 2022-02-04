@@ -10,4 +10,7 @@ export class DailyDiscountDto {
 
   @Field()
   discount: number;
+
+  @Field()
+  employeeId: string;
 }

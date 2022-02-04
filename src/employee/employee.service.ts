@@ -15,7 +15,7 @@ export class EmployeeService {
   ) {}
 
   async getEmployees(): Promise<Employee[]> {
-    return await this.EmpRepo.find();
+    return await this.EmpRepo.find({ relations: ['dailyDiscounts'] });
   }
 
   async createEmployee(employee: EmployeeDto): Promise<Employee> {
