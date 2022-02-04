@@ -9,17 +9,23 @@ import { DailyDiscountModule } from './daily-discount/daily-discount.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5434,
+      host: 'localhost', 
+      port: 5432,
+      // port: 5434,
       username: 'postgres',
       password: 'metal158',
-      database: 'school-employees-manger',
+      database: 'postgres',
+      // database: 'school-employees-manger',
       autoLoadEntities: true,
       synchronize: true,
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       sortSchema: true,
+      cors: {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      },
     }),
     ProjectModule,
     EmployeeModule,
