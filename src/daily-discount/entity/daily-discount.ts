@@ -9,8 +9,8 @@ export class DailyDiscount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field()
-  @Column({ type: 'timestamptz' })
+  @Field() 
+  @Column({ type: 'timestamp' })
   date: Date;
 
   @Field({ nullable: true })

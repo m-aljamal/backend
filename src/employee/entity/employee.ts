@@ -11,7 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@ObjectType()
+@ObjectType('Employee')
 @Entity()
 export class Employee {
   @Field()

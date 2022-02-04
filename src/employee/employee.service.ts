@@ -25,4 +25,9 @@ export class EmployeeService {
   getProject(projectId: string): Promise<Project> {
     return this.projectService.findOne(projectId);
   }
+
+  async getEmployee(id: string): Promise<Employee> {
+    const employee = await this.EmpRepo.findOne({ id });
+    return await this.EmpRepo.findOne({ id });
+  }
 }
