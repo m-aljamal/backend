@@ -27,6 +27,7 @@ export class DailyDiscountService {
       .select('dailyDiscount.employeeId')
       .addSelect('SUM(dailyDiscount.discount)', 'discount')
       .addSelect('employee.name', 'name')
+      .where('dailyDiscount.date > :date', { date: new Date() })
       .groupBy('dailyDiscount.employeeId')
       .addGroupBy('employee.name')
       .innerJoin(
@@ -40,10 +41,3 @@ export class DailyDiscountService {
     return total;
   }
 }
-
-// corrent
-// .createQueryBuilder('dailyDiscount')
-// .select('dailyDiscount.employeeId')
-// .addSelect('SUM(dailyDiscount.discount)', 'discount')
-// .groupBy('dailyDiscount.employeeId')
-// .getRawMany();
