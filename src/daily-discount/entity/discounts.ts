@@ -12,4 +12,7 @@ export class Discount {
 
   @Field()
   discount: number;
+
+  @Field()
+  salary: number;
 }

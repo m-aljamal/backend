@@ -1,7 +1,7 @@
 import { DailyDiscount } from './entity/daily-discount';
 import { Injectable } from '@nestjs/common';
-import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
-import { LessThan, MoreThan, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { DailyDiscountDto } from './dto/daily-discount.dto';
 
 @Injectable()
@@ -22,18 +22,20 @@ export class DailyDiscountService {
   }
 
   async dailyDiscountsByCurrentMonth() {
-    const projectId = '4e677f32-f6da-418a-a662-deb252e10a46';
+    const projectId = '47f913bf-0e9f-40e8-989b-1f6b676a3076';
     const total = await this.repo
       .createQueryBuilder('dailyDiscount')
       .select('dailyDiscount.employeeId')
       .addSelect('SUM(dailyDiscount.discount)', 'discount')
       .addSelect('employee.name', 'name')
+      .addSelect('employee.salary', 'salary')
       .addSelect('employee.projectId', 'projectId')
       .where('dailyDiscount.date > :date', { date: new Date() })
       .where('employee.projectId = :projectId', { projectId })
       .groupBy('dailyDiscount.employeeId')
       .addGroupBy('employee.name')
       .addGroupBy('employee.projectId')
+      .addGroupBy('employee.salary')
       .innerJoin(
         'employee',
         'employee',
@@ -46,18 +48,3 @@ export class DailyDiscountService {
     return total;
   }
 }
-
-// const total = await this.repo
-// .createQueryBuilder('dailyDiscount')
-// .select('dailyDiscount.employeeId')
-// .addSelect('SUM(dailyDiscount.discount)', 'discount')
-// .addSelect('employee.name', 'name')
-// .where('dailyDiscount.date > :date', { date: new Date() })
-// .groupBy('dailyDiscount.employeeId')
-// .addGroupBy('employee.name')
-// .innerJoin(
-//   'employee',
-//   'employee',
-//   'employee.id = dailyDiscount.employeeId',
-// )
-// .getRawMany();
