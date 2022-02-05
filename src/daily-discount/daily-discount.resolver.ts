@@ -1,3 +1,4 @@
+import { Discount } from './entity/discounts';
 import { EmployeeService } from './../employee/employee.service';
 import { DailyDiscountDto } from './dto/daily-discount.dto';
 import { DailyDiscountService } from './daily-discount.service';
@@ -27,7 +28,7 @@ export class DailyDiscountResolver {
     return await this.service.dailyDiscounts();
   }
 
-  @Query(() => [DailyDiscount], { name: 'dailyDiscountsByCurrentMonth' })
+  @Query(() => [Discount], { name: 'dailyDiscountsByCurrentMonth' })
   async dailyDiscountsByCurrentMonth() {
     return await this.service.dailyDiscountsByCurrentMonth();
   }
@@ -39,7 +40,6 @@ export class DailyDiscountResolver {
     return await this.service.createDailyDiscount(dailyDiscount);
   }
 
- 
   @ResolveField(() => DailyDiscount)
   async employee(@Parent() employee: DailyDiscount): Promise<Employee> {
     return await this.employeeService.getEmployee(employee.employeeId);

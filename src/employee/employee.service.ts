@@ -4,7 +4,7 @@ import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MoreThan, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EmployeeService {
