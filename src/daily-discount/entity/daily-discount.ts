@@ -9,7 +9,7 @@ export class DailyDiscount {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field() 
+  @Field()
   @Column({ type: 'timestamp' })
   date: Date;
 
@@ -21,7 +21,7 @@ export class DailyDiscount {
   @Column({ type: 'numeric' })
   discount: number;
 
-  @ManyToOne(() => Employee, (employee) => employee.dailyDiscounts)
+  @ManyToOne(() => Employee, (employee) => employee.dailyDiscounts, {})
   @Field(() => Employee)
   employee: Employee;
 

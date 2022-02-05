@@ -14,23 +14,9 @@ export class EmployeeService {
     private readonly projectService: ProjectService,
   ) {}
 
-  async getEmployees(): Promise<Employee[]> {
+  async getEmployees() {
     return await this.EmpRepo.find({
-      // relations: ['dailyDiscounts'],
-      // select: [
-      //   'id',
-      //   'name',
-      //   'salary',
-      //   'createdAt',
-      //   'updatedAt',
-      //   'projectId',
-      //   'dailyDiscounts',
-      // ],
-      join: {
-        alias: 'dailyDiscounts',
-        innerJoin: { employees: 'dailyDiscounts.employeeId' },
-      },
-      // https://github.com/typeorm/typeorm/blob/master/docs/find-options.md
+      relations: ['project', 'dailyDiscounts'],
     });
   }
 

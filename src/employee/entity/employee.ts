@@ -38,7 +38,7 @@ export class Employee {
   @Field(() => Project)
   project: Project;
 
-  @OneToMany(() => DailyDiscount, (dailyDiscount) => dailyDiscount.employee)
+  @OneToMany(() => DailyDiscount, (dailyDiscount) => dailyDiscount.employee, {})
   @Field(() => [DailyDiscount])
   dailyDiscounts: DailyDiscount[];
 
