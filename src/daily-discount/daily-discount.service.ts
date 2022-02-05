@@ -24,7 +24,13 @@ export class DailyDiscountService {
   async dailyDiscountsByCurrentMonth(): Promise<DailyDiscount[]> {
     const total = await this.repo
       .createQueryBuilder('dailyDiscount')
-      // .select('SUM(dailyDiscount.discount)', 'discount')
+    //.select('SUM(dailyDiscount.discount),', 'discount')
+      .select('*')
+      .innerJoin(
+        'employee',
+        'employee',
+        'employee.id = dailyDiscount.employeeId',
+      )
       .where('dailyDiscount.date > :after', {
         after: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       })
@@ -33,11 +39,11 @@ export class DailyDiscountService {
           new Date().getFullYear(),
           new Date().getMonth() + 1,
           1,
-        ),
+        )
       })
-      .getMany();
-console.log(total);
+      .getRawMany();
+    console.log(total);
 
-      return total
+    return total;
   }
 }

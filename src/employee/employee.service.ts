@@ -4,7 +4,7 @@ import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class EmployeeService {
@@ -15,7 +15,23 @@ export class EmployeeService {
   ) {}
 
   async getEmployees(): Promise<Employee[]> {
-    return await this.EmpRepo.find({ relations: ['dailyDiscounts'] });
+    return await this.EmpRepo.find({
+      // relations: ['dailyDiscounts'],
+      // select: [
+      //   'id',
+      //   'name',
+      //   'salary',
+      //   'createdAt',
+      //   'updatedAt',
+      //   'projectId',
+      //   'dailyDiscounts',
+      // ],
+      join: {
+        alias: 'dailyDiscounts',
+        innerJoin: { employees: 'dailyDiscounts.employeeId' },
+      },
+      // https://github.com/typeorm/typeorm/blob/master/docs/find-options.md
+    });
   }
 
   async createEmployee(employee: EmployeeDto): Promise<Employee> {
