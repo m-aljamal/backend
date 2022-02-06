@@ -12,4 +12,7 @@ export class Auth {
 
   @Field()
   password: string;
+
+  @Field({ nullable: true })
+  token: string;
 }

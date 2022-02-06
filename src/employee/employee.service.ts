@@ -5,6 +5,7 @@ import { Employee } from './entity/employee';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class EmployeeService {
@@ -27,9 +28,14 @@ export class EmployeeService {
       .getOne();
 
     if (newEmployee) {
-      throw new BadRequestException('الموظفن موجود مسبقا');
+      throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
-    newEmployee = this.EmpRepo.create(employee);
+    const hashedPassword = await bcrypt.hash(employee.password, 10);
+
+    newEmployee = this.EmpRepo.create({
+      ...employee,
+      password: hashedPassword,
+    });
     return await this.EmpRepo.save(newEmployee);
   }
 
@@ -85,5 +91,9 @@ export class EmployeeService {
       where: { projectId },
       relations: ['project', 'dailyDiscounts'],
     });
+  }
+
+  async findByUsername(username: string): Promise<Employee> {
+    return await this.EmpRepo.findOne({ username });
   }
 }

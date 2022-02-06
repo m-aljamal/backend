@@ -6,20 +6,30 @@ import { EmployeeModule } from './employee/employee.module';
 import { DailyDiscountModule } from './daily-discount/daily-discount.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-     //  port: 5432,
-      port: 5434,
-      username: 'postgres',
-      password: 'metal158',
-    //   database: 'postgres',
-     database: 'school-employees-manger',
-      autoLoadEntities: true,
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env`,
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: config.get('DB_HOST'),
+          //  port: 5432,
+          port: config.get('DB_PORT'),
+          username: config.get('DB_USERNAME'),
+          password: config.get('DB_PASSWORD'),
+          //   database: 'postgres',
+          database: config.get('DB_NAME'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
