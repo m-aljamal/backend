@@ -20,6 +20,20 @@ export class EmployeeResolver {
     return await this.employeeService.getEmployees();
   }
 
+  @Query(() => [Employee], { name: 'employeesByProject' })
+  async employeesByProject(
+    @Args('projectId') projectId: string,
+  ): Promise<Employee[]> {
+    return await this.employeeService.getEmployeesByProject(projectId);
+  }
+
+  @Query(() => [Employee], { name: 'salariesbycurrentMonth' })
+  async salariesByCurrentMonth(
+    @Args('projectId') projectId: string,
+  ){
+    return await this.employeeService.salariesByCurrentMonth(projectId);
+  }
+
   @Mutation(() => Employee)
   async createEmployee(
     @Args('employee') employee: EmployeeDto,

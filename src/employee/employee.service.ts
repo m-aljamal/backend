@@ -32,4 +32,32 @@ export class EmployeeService {
     const employee = await this.EmpRepo.findOne({ id });
     return await this.EmpRepo.findOne({ id });
   }
+
+  async salariesByCurrentMonth(projectId: string) {
+    const salaries = await this.EmpRepo.createQueryBuilder('employee')
+
+      .addSelect('SUM(daily_discount.discount)', 'discount')
+      .groupBy('daily_discount.employeeId')
+      .addGroupBy('employee.id')
+      .leftJoin(
+        'daily_discount',
+        'daily_discount',
+        'employee.id = daily_discount.employeeId',
+      )
+      .getRawMany();
+
+    // const salaries = await this.EmpRepo.find({
+    //   where: { projectId },
+    //   relations: ['dailyDiscounts'],
+    // });
+    console.log(salaries);
+    return salaries;
+  }
+
+  async getEmployeesByProject(projectId: string): Promise<Employee[]> {
+    return await this.EmpRepo.find({
+      where: { projectId },
+      relations: ['project', 'dailyDiscounts'],
+    });
+  }
 }
