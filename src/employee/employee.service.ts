@@ -2,7 +2,7 @@ import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -21,7 +21,16 @@ export class EmployeeService {
   }
 
   async createEmployee(employee: EmployeeDto): Promise<Employee> {
-    return await this.EmpRepo.save(employee);
+    let newEmployee = await this.EmpRepo.createQueryBuilder('employee')
+      .where('employee.username = :username', { username: employee.username })
+      .orWhere('employee.name = :name', { name: employee.name })
+      .getOne();
+
+    if (newEmployee) {
+      throw new BadRequestException('الموظفن موجود مسبقا');
+    }
+    newEmployee = this.EmpRepo.create(employee);
+    return await this.EmpRepo.save(newEmployee);
   }
 
   getProject(projectId: string): Promise<Project> {

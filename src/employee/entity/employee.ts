@@ -27,7 +27,7 @@ export class Employee {
   salary: number;
 
   @CreateDateColumn({ type: 'timestamp' })
-  @Field({})
+  @Field()
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
@@ -45,4 +45,12 @@ export class Employee {
   @Column()
   @Field()
   projectId: string;
+
+  @Column()
+  @Field()
+  username: string;
+
+  @Column()
+  @Field()
+  password: string;
 }

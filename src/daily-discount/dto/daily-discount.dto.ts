@@ -14,4 +14,6 @@ export class DailyDiscountDto {
   @Field()
   employeeId: string;
 
+  @Field()
+  hasDiscount: boolean;
 }

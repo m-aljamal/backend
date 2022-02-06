@@ -1,15 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class EmployeeDto {
+export class AdminDto {
   @Field()
   name: string;
-
-  @Field()
-  salary: number;
-
-  @Field()
-  projectId: string;
 
   @Field()
   username: string;
