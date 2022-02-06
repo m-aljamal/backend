@@ -34,24 +34,41 @@ export class EmployeeService {
   }
 
   async salariesByCurrentMonth(projectId: string) {
-    const salaries = await this.EmpRepo.createQueryBuilder('employee')
+    const [salariesWithDiscount, salariesWithNoDiscount] = await Promise.all([
+      await this.EmpRepo.createQueryBuilder('employee')
+        .addSelect('SUM(daily_discount.discount)', 'discount')
+        .addSelect('daily_discount.employeeId', 'employeeId')
+        .where('daily_discount.date > :date', { date: new Date() })
+        .andWhere('daily_discount.hasDiscount = :hasDiscount', {
+          hasDiscount: true,
+        })
+        .andWhere('employee.projectId = :projectId', { projectId })
+        .addGroupBy('employee.id')
+        .addGroupBy('daily_discount.employeeId')
+        .leftJoin(
+          'daily_discount',
+          'daily_discount',
+          'employee.id = daily_discount.employeeId',
+        )
+        .innerJoin('project', 'project', 'project.id = employee.projectId')
+        .getRawMany(),
 
-      .addSelect('SUM(daily_discount.discount)', 'discount')
-      .groupBy('daily_discount.employeeId')
-      .addGroupBy('employee.id')
-      .leftJoin(
-        'daily_discount',
-        'daily_discount',
-        'employee.id = daily_discount.employeeId',
-      )
-      .getRawMany();
+      await this.EmpRepo.createQueryBuilder('employee')
+        .andWhere('employee.projectId = :projectId', { projectId })
+        .addGroupBy('employee.id')
+        .addGroupBy('daily_discount.discount')
+        .leftJoin(
+          'daily_discount',
+          'daily_discount',
+          'employee.id = daily_discount.employeeId',
+        )
+        .innerJoin('project', 'project', 'project.id = employee.projectId')
 
-    // const salaries = await this.EmpRepo.find({
-    //   where: { projectId },
-    //   relations: ['dailyDiscounts'],
-    // });
-    console.log(salaries);
-    return salaries;
+        .having('daily_discount.discount IS NULL')
+        .getRawMany(),
+    ]);
+
+    return [...salariesWithDiscount, ...salariesWithNoDiscount];
   }
 
   async getEmployeesByProject(projectId: string): Promise<Employee[]> {

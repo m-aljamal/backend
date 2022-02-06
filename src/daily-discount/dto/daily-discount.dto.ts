@@ -13,4 +13,5 @@ export class DailyDiscountDto {
 
   @Field()
   employeeId: string;
+
 }

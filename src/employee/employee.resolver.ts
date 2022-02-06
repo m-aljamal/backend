@@ -10,6 +10,7 @@ import {
 import { EmployeeService } from './employee.service';
 import { Employee } from './entity/employee';
 import { Project } from 'src/project/entity/project';
+import { Salaries } from './entity/salaries';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -27,10 +28,8 @@ export class EmployeeResolver {
     return await this.employeeService.getEmployeesByProject(projectId);
   }
 
-  @Query(() => [Employee], { name: 'salariesbycurrentMonth' })
-  async salariesByCurrentMonth(
-    @Args('projectId') projectId: string,
-  ){
+  @Query(() => [Salaries], { name: 'salariesbycurrentMonth' })
+  async salariesByCurrentMonth(@Args('projectId') projectId: string) {
     return await this.employeeService.salariesByCurrentMonth(projectId);
   }
 

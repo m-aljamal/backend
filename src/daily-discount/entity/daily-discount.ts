@@ -28,4 +28,8 @@ export class DailyDiscount {
   @Column()
   @Field()
   employeeId: string;
+
+  @Column({ default: false })
+  @Field()
+  hasDiscount: boolean;
 }
