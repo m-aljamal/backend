@@ -30,7 +30,8 @@ export class EmployeeService {
     if (newEmployee) {
       throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
-    const hashedPassword = await bcrypt.hash(employee.password, 10);
+    const salt = bcrypt.genSaltSync();
+    const hashedPassword = bcrypt.hashSync(employee.password, salt);
 
     newEmployee = this.EmpRepo.create({
       ...employee,

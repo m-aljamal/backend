@@ -14,5 +14,5 @@ export class Auth {
   password: string;
 
   @Field({ nullable: true })
-  token: string;
+  accessToken: string;
 }

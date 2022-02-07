@@ -1,3 +1,5 @@
+import { GetUserArgs } from './dto/get-user-args';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
 import {
   Args,
@@ -11,6 +13,8 @@ import { EmployeeService } from './employee.service';
 import { Employee } from './entity/employee';
 import { Project } from 'src/project/entity/project';
 import { Salaries } from './entity/salaries';
+import { UseGuards } from '@nestjs/common';
+import { CurrentUser } from 'src/auth/current-user.decorator';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -31,6 +35,14 @@ export class EmployeeResolver {
   @Query(() => [Salaries], { name: 'salariesbycurrentMonth' })
   async salariesByCurrentMonth(@Args('projectId') projectId: string) {
     return await this.employeeService.salariesByCurrentMonth(projectId);
+  }
+
+  @Query(() => Employee, { name: 'getEmployee', nullable: true })
+  @UseGuards(GqlAuthGuard)
+  getEmployee(@CurrentUser() user: any) {
+    // return this.employeeService.getEmployee(args.id);
+    console.log('user', user);
+    
   }
 
   @Mutation(() => Employee)

@@ -11,21 +11,36 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(username: string, password: string) {
+  async validate(username: string, password: string) {
     const user = await this.employeeService.findByUsername(username);
     if (!user) {
-      throw new BadRequestException('المستخدم غير موجود');
+      return null;
     }
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    const isPasswordMatch = bcrypt.compareSync(password, user.password);
     if (!isPasswordMatch) {
-      throw new BadRequestException('كلمة المرور غير صحيحة');
+      return null;
     }
-    const token = await ApiFeatch.assignJwtToken(user.id, this.jwtService);
 
-    return { token };
+    return user;
   }
 
-  async findUserById(id: string) {
-    return {};
+  async login(user: any): Promise<{ accessToken: string }> {
+    const payload = { username: user.username, sub: user.id };
+    const token = this.jwtService.sign(payload);
+
+    return { accessToken: token };
+  }
+
+  async verify(token: string) {
+    const decoded = await this.jwtService.verify(token, {
+      secret: process.env.JWT_SECRET,
+    });
+    console.log('decoded', decoded);
+    const user = await this.employeeService.findByUsername(decoded.username);
+    if (!user) {
+      throw new BadRequestException('Invalid token');
+    }
+    console.log('user', user);
+    return user;
   }
 }
