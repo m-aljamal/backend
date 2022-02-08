@@ -36,7 +36,7 @@ export class EmployeeResolver {
     return await this.employeeService.salariesByCurrentMonth(projectId);
   }
 
-  @Query(() => Employee, { name: 'getEmployee', nullable: true })
+  @Query(() => Employee, { name: 'currentUser', nullable: true })
   @UseGuards(GqlAuthGuard)
   getEmployee(@CurrentUser() user: Employee) {
     return user;

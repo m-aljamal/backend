@@ -30,7 +30,7 @@ export class Employee {
   @Column()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({ type: 'int', nullable: true })
   salary: number;
 

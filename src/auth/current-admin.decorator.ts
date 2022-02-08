@@ -16,7 +16,6 @@ export const CurrentAdmin = createParamDecorator(
     if (user.role !== 'admin') {
       throw new UnauthorizedException();
     }
-
-    return ctx.getContext().req.user;
+    return user;
   },
 );
