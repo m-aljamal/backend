@@ -4,9 +4,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthenticationError } from 'apollo-server-express';
 
-export const CurrentUser = createParamDecorator(
+export const CurrentAdmin = createParamDecorator(
   (_data: unknown, context: ExecutionContext) => {
     if (context.getType() === 'http') {
       return context.switchToHttp().getRequest().user;
@@ -14,6 +13,9 @@ export const CurrentUser = createParamDecorator(
 
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.user;
+    if (user.role !== 'admin') {
+      throw new UnauthorizedException();
+    }
 
     return ctx.getContext().req.user;
   },
