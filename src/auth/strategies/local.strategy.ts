@@ -1,3 +1,4 @@
+import { Employee } from 'src/employee/entity/employee';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
@@ -9,16 +10,22 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({
       usernameField: 'username',
       passwordField: 'password',
-
-      passReqToCallback: true,
+      // passReqToCallback: true,
     });
   }
 
-  async validate(req: Request) {
-    const user = this.authService.validate(req.body);
+  async validate(username: string, password: string): Promise<Employee> {
+    const user = this.authService.validate(username, password);
     if (!user) {
       throw new UnauthorizedException();
     }
     return user;
   }
+  // async validate(req: Request) {
+  //   const user = this.authService.validate(req.body);
+  //   if (!user) {
+  //     throw new UnauthorizedException();
+  //   }
+  //   return user;
+  // }
 }

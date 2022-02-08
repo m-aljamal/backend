@@ -1,3 +1,4 @@
+import { Employee } from 'src/employee/entity/employee';
 import { JwtService } from '@nestjs/jwt';
 import { EmployeeService } from './../employee/employee.service';
 import { Injectable, BadRequestException } from '@nestjs/common';
@@ -10,25 +11,41 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validate(body: any) {
-    console.log('username', body.username);
-    console.log('pass', body.password);
-    console.log('kind', body.kind);
+  async validate(username: string, password: string): Promise<Employee | null> {
+    const user = await this.employeeService.findByUsername(username);
 
-    // const user = await this.employeeService.findByUsername(username);
-    // if (!user) {
-    //   return null;
-    // }
-    // const isPasswordMatch = bcrypt.compareSync(password, user.password);
-    // if (!isPasswordMatch) {
-    //   return null;
-    // }
+    if (!user) {
+      return null;
+    }
+    const isPasswordMatch = bcrypt.compareSync(password, user.password);
+    if (!isPasswordMatch) {
+      return null;
+    }
 
-    // return user;
+    return user;
   }
+  // async validate(body: any) {
+  //   const { username, password, kind } = body;
+  //   let user;
+  //   if (kind === 'employee') {
+  //     user = await this.employeeService.findByUsername(username);
+  //   } else if (kind === 'admin') {
+  //     user = await this.adminService.findByUsername(username);
+  //   }
 
-  async login(user: any): Promise<{ accessToken: string }> {
-    const payload = { username: user.username, sub: user.id };
+  //   if (!user) {
+  //     return null;
+  //   }
+  //   const isPasswordMatch = bcrypt.compareSync(password, user.password);
+  //   if (!isPasswordMatch) {
+  //     return null;
+  //   }
+
+  //   return user;
+  // }
+
+  async login(user: Employee): Promise<{ accessToken: string }> {
+    const payload = { username: user.username, sub: user.id, role: user.role };
     const token = this.jwtService.sign(payload);
     return { accessToken: token };
   }
@@ -37,10 +54,10 @@ export class AuthService {
     const decoded = await this.jwtService.verify(token, {
       secret: process.env.JWT_SECRET,
     });
-    // const user = await this.employeeService.findByUsername(decoded.username);
-    // if (!user) {
-    //   throw new BadRequestException('Invalid token');
-    // }
-    // return user;
+    const user = await this.employeeService.findByUsername(decoded.username);
+    if (!user) {
+      throw new BadRequestException('Invalid token');
+    }
+    return user;
   }
 }

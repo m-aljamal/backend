@@ -1,5 +1,5 @@
 import { DailyDiscount } from './../../daily-discount/entity/daily-discount';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
 import {
   Column,
@@ -11,6 +11,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum Role {
+  ADMIN = 'admin',
+  EMPLOYEE = 'employee',
+}
+
+registerEnumType(Role, {
+  name: 'Role',
+});
 @ObjectType('Employee')
 @Entity()
 export class Employee {
@@ -23,7 +31,7 @@ export class Employee {
   name: string;
 
   @Field()
-  @Column({ type: 'int' })
+  @Column({ type: 'int', nullable: true })
   salary: number;
 
   @CreateDateColumn({ type: 'timestamp' })
@@ -42,7 +50,7 @@ export class Employee {
   @Field(() => [DailyDiscount])
   dailyDiscounts: DailyDiscount[];
 
-  @Column()
+  @Column({ nullable: true })
   @Field()
   projectId: string;
 
@@ -53,4 +61,12 @@ export class Employee {
   @Column()
   @Field()
   password: string;
+
+  @Column({
+    enum: Role,
+    default: Role.EMPLOYEE,
+    type: 'enum',
+  })
+  @Field(() => Role)
+  role: Role;
 }

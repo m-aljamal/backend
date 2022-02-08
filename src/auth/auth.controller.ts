@@ -1,3 +1,4 @@
+import { Employee } from 'src/employee/entity/employee';
 import { Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -10,7 +11,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Req() req: Request) {
-    return this.authService.login(req.user);
+  login(@Req() req: Request): Promise<{ accessToken: string }> {
+    return this.authService.login(req.user as Employee);
   }
 }

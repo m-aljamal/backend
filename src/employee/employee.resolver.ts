@@ -1,4 +1,3 @@
-import { GetUserArgs } from './dto/get-user-args';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
 import {

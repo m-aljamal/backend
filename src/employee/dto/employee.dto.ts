@@ -1,14 +1,17 @@
+import { IsNotEmpty } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
+import { Role } from '../entity/employee';
 
 @InputType()
 export class EmployeeDto {
   @Field()
+  @IsNotEmpty()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   salary: number;
 
-  @Field()
+  @Field({ nullable: true })
   projectId: string;
 
   @Field()
@@ -16,4 +19,7 @@ export class EmployeeDto {
 
   @Field()
   password: string;
+
+  @Field(() => Role, { defaultValue: Role.EMPLOYEE })
+  role: Role;
 }

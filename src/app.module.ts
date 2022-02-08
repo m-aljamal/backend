@@ -4,7 +4,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ProjectModule } from './project/project.module';
 import { EmployeeModule } from './employee/employee.module';
 import { DailyDiscountModule } from './daily-discount/daily-discount.module';
-import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -42,7 +41,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ProjectModule,
     EmployeeModule,
     DailyDiscountModule,
-    AdminModule,
     AuthModule,
   ],
 })
