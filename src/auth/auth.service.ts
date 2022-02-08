@@ -10,13 +10,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validate(
-    type: string,
-    username: string,
-    password: string,
-    test: string,
-  ) {
-    console.log('auth service', { type, username, password, test });
+  async validate(body: any) {
+    console.log('username', body.username);
+    console.log('pass', body.password);
+    console.log('kind', body.kind);
 
     // const user = await this.employeeService.findByUsername(username);
     // if (!user) {
