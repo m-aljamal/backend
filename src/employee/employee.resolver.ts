@@ -39,10 +39,8 @@ export class EmployeeResolver {
 
   @Query(() => Employee, { name: 'getEmployee', nullable: true })
   @UseGuards(GqlAuthGuard)
-  getEmployee(@CurrentUser() user: any) {
-    // return this.employeeService.getEmployee(args.id);
-    console.log('user', user);
-    
+  getEmployee(@CurrentUser() user: Employee) {
+    return user;
   }
 
   @Mutation(() => Employee)

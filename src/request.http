@@ -2,6 +2,8 @@ POST http://localhost:3001/auth/login
 Content-Type: application/json
 
 {
-  "username": "abdullah",
-    "password": "pass"
+  "username": "mmo",
+    "password": "pass",
+    "kind":"employee"
+    
 }

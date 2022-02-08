@@ -1,3 +1,4 @@
+import { hashPassword } from './../utils/hashPassword';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
@@ -5,7 +6,6 @@ import { Employee } from './entity/employee';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class EmployeeService {
@@ -30,12 +30,10 @@ export class EmployeeService {
     if (newEmployee) {
       throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
-    const salt = bcrypt.genSaltSync();
-    const hashedPassword = bcrypt.hashSync(employee.password, salt);
 
     newEmployee = this.EmpRepo.create({
       ...employee,
-      password: hashedPassword,
+      password: hashPassword(employee.password),
     });
     return await this.EmpRepo.save(newEmployee);
   }

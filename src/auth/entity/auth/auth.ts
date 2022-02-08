@@ -15,4 +15,7 @@ export class Auth {
 
   @Field({ nullable: true })
   accessToken: string;
+
+  @Field()
+  type: string;
 }
