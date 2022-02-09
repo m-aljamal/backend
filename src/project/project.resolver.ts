@@ -10,15 +10,17 @@ import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 @Resolver(() => Project)
 export class ProjectResolver {
   constructor(private readonly projectservice: ProjectService) {}
+
+  @UseGuards(GqlAuthGuard)
   @Query(() => [Project], { name: 'projects' })
-  getAllProjects() {
+  getAllProjects(@CurrentAdmin() user: Employee) {
     return this.projectservice.findAll();
   }
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Project)
   createProject(
-    @CurrentAdmin() user: Employee,
+    // @CurrentAdmin() user: Employee,
     @Args('project') project: CreateProjectDto,
   ) {
     return this.projectservice.createProject(project);
