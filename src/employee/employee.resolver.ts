@@ -1,4 +1,4 @@
-import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
 import {
   Args,
@@ -37,8 +37,10 @@ export class EmployeeResolver {
   }
 
   @Query(() => Employee, { name: 'currentUser', nullable: true })
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(JwtAuthGuard)
   getEmployee(@CurrentUser() user: Employee) {
+    console.log(user);
+
     return user;
   }
 
