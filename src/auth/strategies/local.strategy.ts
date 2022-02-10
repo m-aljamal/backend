@@ -21,11 +21,4 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     }
     return user;
   }
-  // async validate(req: Request) {
-  //   const user = this.authService.validate(req.body);
-  //   if (!user) {
-  //     throw new UnauthorizedException();
-  //   }
-  //   return user;
-  // }
 }

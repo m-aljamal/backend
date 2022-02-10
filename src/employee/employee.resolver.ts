@@ -39,8 +39,6 @@ export class EmployeeResolver {
   @Query(() => Employee, { name: 'currentUser', nullable: true })
   @UseGuards(JwtAuthGuard)
   getEmployee(@CurrentUser() user: Employee) {
-    console.log(user);
-
     return user;
   }
 

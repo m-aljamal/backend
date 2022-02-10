@@ -6,7 +6,8 @@ import { Employee } from './entity/employee';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import { Observable, from, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -94,5 +95,16 @@ export class EmployeeService {
 
   async findByUsername(username: string): Promise<Employee> {
     return await this.EmpRepo.findOne({ username });
+  }
+
+  async findOne(id: string) {
+    return from(this.EmpRepo.findOne({ id })).pipe(
+      map((employee) => {
+        if (!employee) {
+          throw new BadRequestException('الموظف غير موجود');
+        }
+        return employee;
+      }),
+    );
   }
 }
