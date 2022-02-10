@@ -8,6 +8,7 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/roles.decorator';
+import { ProjectArgs } from './dto/project.args';
 
 @Resolver(() => Project)
 export class ProjectResolver {
@@ -16,8 +17,8 @@ export class ProjectResolver {
   @hasRoles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Query(() => [Project], { name: 'projects' })
-  getAllProjects() {
-    return this.projectservice.findAll();
+  getAllProjects(@Args() projectArgs: ProjectArgs) {
+    return this.projectservice.findAll(projectArgs);
   }
 
   @UseGuards(JwtAuthGuard)

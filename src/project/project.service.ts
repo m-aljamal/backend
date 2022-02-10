@@ -1,3 +1,4 @@
+import { ProjectArgs } from './dto/project.args';
 import { Project } from './entity/project';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,8 +11,11 @@ export class ProjectService {
     @InjectRepository(Project)
     private readonly projectRepo: Repository<Project>,
   ) {}
-  findAll() {
-    return this.projectRepo.find({ relations: ['employees'] });
+  findAll(projectArgs: ProjectArgs) {
+    return this.projectRepo.find({
+      relations: ['employees'],
+      order: { createdAt: projectArgs.sortBy },
+    });
   }
 
   createProject(project: CreateProjectDto) {
