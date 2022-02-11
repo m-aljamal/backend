@@ -1,3 +1,4 @@
+import { EmployeeArgs } from './dto/findEmployee.args';
 import { hashPassword } from './../utils/hashPassword';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
@@ -16,9 +17,10 @@ export class EmployeeService {
     private readonly projectService: ProjectService,
   ) {}
 
-  async getEmployees() {
+  async getEmployees(roleArgs: EmployeeArgs) {
     return await this.EmpRepo.find({
       relations: ['project', 'dailyDiscounts'],
+      where: { role: roleArgs.role },
     });
   }
 

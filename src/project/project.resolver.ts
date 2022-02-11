@@ -1,5 +1,4 @@
-import { CurrentAdmin } from './../auth/current-admin.decorator';
-import { Employee, Role } from 'src/employee/entity/employee';
+import { Role } from 'src/employee/entity/employee';
 import { ProjectService } from './project.service';
 import { Project } from './entity/project';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';

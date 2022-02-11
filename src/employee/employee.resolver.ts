@@ -1,3 +1,5 @@
+import { EmployeeArgs } from './dto/findEmployee.args';
+import { hasRoles } from 'src/auth/roles.decorator';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
 import {
@@ -9,19 +11,22 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { EmployeeService } from './employee.service';
-import { Employee } from './entity/employee';
+import { Employee, Role } from './entity/employee';
 import { Project } from 'src/project/entity/project';
 import { Salaries } from './entity/salaries';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
   constructor(private readonly employeeService: EmployeeService) {}
 
+  @hasRoles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Query(() => [Employee], { name: 'employees' })
-  async getEmployees(): Promise<Employee[]> {
-    return await this.employeeService.getEmployees();
+  async getEmployees(@Args() roleArgs: EmployeeArgs): Promise<Employee[]> {
+    return await this.employeeService.getEmployees(roleArgs);
   }
 
   @Query(() => [Employee], { name: 'employeesByProject' })
