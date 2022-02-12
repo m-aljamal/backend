@@ -25,4 +25,10 @@ export class ProjectResolver {
   createProject(@Args('project') project: CreateProjectDto) {
     return this.projectservice.createProject(project);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => Project, { name: 'findProject' })
+  getProject(@Args('id') id: string) {
+    return this.projectservice.findOne(id);
+  }
 }

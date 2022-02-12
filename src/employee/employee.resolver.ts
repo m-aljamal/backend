@@ -1,4 +1,3 @@
-import { EmployeeArgs } from './dto/findEmployee.args';
 import { hasRoles } from 'src/auth/roles.decorator';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
@@ -17,6 +16,7 @@ import { Salaries } from './entity/salaries';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { EmployeeArgs } from './dto/findEmployee.args';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -24,6 +24,7 @@ export class EmployeeResolver {
 
   @hasRoles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @hasRoles(Role.EMPLOYEE)
   @Query(() => [Employee], { name: 'employees' })
   async getEmployees(@Args() roleArgs: EmployeeArgs): Promise<Employee[]> {
     return await this.employeeService.getEmployees(roleArgs);
@@ -39,6 +40,11 @@ export class EmployeeResolver {
   @Query(() => [Salaries], { name: 'salariesbycurrentMonth' })
   async salariesByCurrentMonth(@Args('projectId') projectId: string) {
     return await this.employeeService.salariesByCurrentMonth(projectId);
+  }
+
+  @Query(() => Employee, { name: 'findEmployee' })
+  async getEmployeeById(@Args('id') id: string): Promise<Employee> {
+    return await this.employeeService.getEmployeeById(id);
   }
 
   @Query(() => Employee, { name: 'currentUser', nullable: true })

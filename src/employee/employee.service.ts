@@ -109,4 +109,8 @@ export class EmployeeService {
       }),
     );
   }
+
+  async getEmployeeById(id: string): Promise<Employee> {
+    return await this.EmpRepo.findOne({ id });
+  }
 }
