@@ -1,3 +1,4 @@
+import { ProjectEmployeesArgs } from './dto/employee.args';
 import { hasRoles } from 'src/auth/roles.decorator';
 import { JwtAuthGuard } from './../auth/guards/jwt-auth.guard';
 import { EmployeeDto } from './dto/employee.dto';
@@ -24,17 +25,17 @@ export class EmployeeResolver {
 
   @hasRoles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @hasRoles(Role.EMPLOYEE)
+  @hasRoles(Role.MANGER)
   @Query(() => [Employee], { name: 'employees' })
   async getEmployees(@Args() roleArgs: EmployeeArgs): Promise<Employee[]> {
     return await this.employeeService.getEmployees(roleArgs);
   }
 
-  @Query(() => [Employee], { name: 'employeesByProject' })
+  @Query(() => [Employee], { name: 'findEmployeesByProjectId' })
   async employeesByProject(
-    @Args('projectId') projectId: string,
+    @Args() projectEmployees: ProjectEmployeesArgs,
   ): Promise<Employee[]> {
-    return await this.employeeService.getEmployeesByProject(projectId);
+    return await this.employeeService.getEmployeesByProject(projectEmployees);
   }
 
   @Query(() => [Salaries], { name: 'salariesbycurrentMonth' })
@@ -42,7 +43,7 @@ export class EmployeeResolver {
     return await this.employeeService.salariesByCurrentMonth(projectId);
   }
 
-  @Query(() => Employee, { name: 'findEmployee' })
+  @Query(() => Employee, { name: 'findEmployeeById' })
   async getEmployeeById(@Args('id') id: string): Promise<Employee> {
     return await this.employeeService.getEmployeeById(id);
   }

@@ -20,6 +20,6 @@ export class EmployeeDto {
   @Field()
   password: string;
 
-  @Field(() => Role, { defaultValue: Role.EMPLOYEE })
+  @Field(() => Role, { defaultValue: Role.TEACHER })
   role: Role;
 }

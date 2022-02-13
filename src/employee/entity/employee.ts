@@ -13,7 +13,8 @@ import {
 
 export enum Role {
   ADMIN = 'admin',
-  EMPLOYEE = 'employee',
+  MANGER = 'MANGER',
+  TEACHER = 'teacher',
 }
 
 registerEnumType(Role, {
@@ -51,7 +52,7 @@ export class Employee {
   dailyDiscounts: DailyDiscount[];
 
   @Column({ nullable: true })
-  @Field()
+  @Field({ nullable: true })
   projectId: string;
 
   @Column()
@@ -64,7 +65,7 @@ export class Employee {
 
   @Column({
     enum: Role,
-    default: Role.EMPLOYEE,
+    default: Role.MANGER,
     type: 'enum',
   })
   @Field(() => Role)

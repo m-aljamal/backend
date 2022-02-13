@@ -1,12 +1,13 @@
+import { ProjectEmployeesArgs } from './dto/employee.args';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { hashPassword } from './../utils/hashPassword';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
-import { Employee } from './entity/employee';
+import { Employee, Role } from './entity/employee';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Observable, from, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 @Injectable()
@@ -88,10 +89,16 @@ export class EmployeeService {
     return [...salariesWithDiscount, ...salariesWithNoDiscount];
   }
 
-  async getEmployeesByProject(projectId: string): Promise<Employee[]> {
+  async getEmployeesByProject(
+    projectEmployees: ProjectEmployeesArgs,
+  ): Promise<Employee[]> {
     return await this.EmpRepo.find({
-      where: { projectId },
+      where: {
+        projectId: projectEmployees.projectId,
+        role: Not(Role.ADMIN),
+      },
       relations: ['project', 'dailyDiscounts'],
+      order: { createdAt: projectEmployees.sortBy },
     });
   }
 
