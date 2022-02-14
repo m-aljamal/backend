@@ -22,7 +22,7 @@ export class DailyDiscountService {
   }
 
   async dailyDiscountsByCurrentMonth() {
-    const projectId = '47f913bf-0e9f-40e8-989b-1f6b676a3076';
+    const projectId = '34a3492a-5de8-453f-8750-1e5f4ceb9ac9';
     const total = await this.repo
       .createQueryBuilder('dailyDiscount')
       .select('dailyDiscount.employeeId')

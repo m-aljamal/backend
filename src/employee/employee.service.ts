@@ -56,7 +56,13 @@ export class EmployeeService {
       await this.EmpRepo.createQueryBuilder('employee')
         .addSelect('SUM(daily_discount.discount)', 'discount')
         .addSelect('daily_discount.employeeId', 'employeeId')
-        .where('daily_discount.date > :date', { date: new Date() })
+        .where('daily_discount.date > :date', {
+          date: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            0,
+          ).toLocaleDateString(),
+        })
         .andWhere('daily_discount.hasDiscount = :hasDiscount', {
           hasDiscount: true,
         })
@@ -72,9 +78,12 @@ export class EmployeeService {
         .getRawMany(),
 
       await this.EmpRepo.createQueryBuilder('employee')
+
         .andWhere('employee.projectId = :projectId', { projectId })
         .addGroupBy('employee.id')
         .addGroupBy('daily_discount.discount')
+        .addGroupBy('daily_discount.hasDiscount')
+        .addGroupBy('daily_discount.date')
         .leftJoin(
           'daily_discount',
           'daily_discount',
@@ -83,6 +92,17 @@ export class EmployeeService {
         .innerJoin('project', 'project', 'project.id = employee.projectId')
 
         .having('daily_discount.discount IS NULL')
+
+        .orHaving('daily_discount.hasDiscount = :hasDiscount', {
+          hasDiscount: false,
+        })
+        .orHaving('daily_discount.date < :date', {
+          date: new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            1,
+          ).toLocaleDateString(),
+        })
         .getRawMany(),
     ]);
 
