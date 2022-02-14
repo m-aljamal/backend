@@ -57,11 +57,7 @@ export class EmployeeService {
         .addSelect('SUM(daily_discount.discount)', 'discount')
         .addSelect('daily_discount.employeeId', 'employeeId')
         .where('daily_discount.date > :date', {
-          date: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            0,
-          ).toLocaleDateString(),
+          date: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
         })
         .andWhere('daily_discount.hasDiscount = :hasDiscount', {
           hasDiscount: true,
@@ -82,8 +78,8 @@ export class EmployeeService {
         .andWhere('employee.projectId = :projectId', { projectId })
         .addGroupBy('employee.id')
         .addGroupBy('daily_discount.discount')
-        .addGroupBy('daily_discount.hasDiscount')
-        .addGroupBy('daily_discount.date')
+        // .addGroupBy('daily_discount.hasDiscount')
+        // .addGroupBy('daily_discount.date')
         .leftJoin(
           'daily_discount',
           'daily_discount',
@@ -93,18 +89,15 @@ export class EmployeeService {
 
         .having('daily_discount.discount IS NULL')
 
-        .orHaving('daily_discount.hasDiscount = :hasDiscount', {
-          hasDiscount: false,
-        })
-        .orHaving('daily_discount.date < :date', {
-          date: new Date(
-            new Date().getFullYear(),
-            new Date().getMonth(),
-            1,
-          ).toLocaleDateString(),
-        })
+        // .orHaving('daily_discount.hasDiscount = :hasDiscount', {
+        //   hasDiscount: false,
+        // })
+        // .orHaving('daily_discount.date > :date', {
+        //   date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        // })
         .getRawMany(),
     ]);
+console.log(new Date(new Date().getFullYear(), new Date().getMonth() , 1));
 
     return [...salariesWithDiscount, ...salariesWithNoDiscount];
   }
