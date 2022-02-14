@@ -52,54 +52,85 @@ export class EmployeeService {
   }
 
   async salariesByCurrentMonth(projectId: string) {
-    const [salariesWithDiscount, salariesWithNoDiscount] = await Promise.all([
-      await this.EmpRepo.createQueryBuilder('employee')
-        .addSelect('SUM(daily_discount.discount)', 'discount')
-        .addSelect('daily_discount.employeeId', 'employeeId')
-        .where('daily_discount.date > :date', {
-          date: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-        })
-        .andWhere('daily_discount.hasDiscount = :hasDiscount', {
-          hasDiscount: true,
-        })
-        .andWhere('employee.projectId = :projectId', { projectId })
-        .addGroupBy('employee.id')
-        .addGroupBy('daily_discount.employeeId')
-        .leftJoin(
-          'daily_discount',
-          'daily_discount',
-          'employee.id = daily_discount.employeeId',
-        )
-        .innerJoin('project', 'project', 'project.id = employee.projectId')
-        .getRawMany(),
+    // const [salariesWithDiscount, salariesWithNoDiscount] = await Promise.all([
+    //   await this.EmpRepo.createQueryBuilder('employee')
+    //     .addSelect('SUM(daily_discount.discount)', 'discount')
+    //     .addSelect('daily_discount.employeeId', 'employeeId')
+    //     .where('daily_discount.date > :date', {
+    //       date: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
+    //     })
+    //     .andWhere('daily_discount.hasDiscount = :hasDiscount', {
+    //       hasDiscount: true,
+    //     })
+    //     .andWhere('employee.projectId = :projectId', { projectId })
+    //     .addGroupBy('employee.id')
+    //     .addGroupBy('daily_discount.employeeId')
+    //     .leftJoin(
+    //       'daily_discount',
+    //       'daily_discount',
+    //       'employee.id = daily_discount.employeeId',
+    //     )
+    //     .innerJoin('project', 'project', 'project.id = employee.projectId')
+    //     .getRawMany(),
 
-      await this.EmpRepo.createQueryBuilder('employee')
+    //   await this.EmpRepo.createQueryBuilder('employee')
 
-        .andWhere('employee.projectId = :projectId', { projectId })
-        .addGroupBy('employee.id')
-        .addGroupBy('daily_discount.discount')
-        // .addGroupBy('daily_discount.hasDiscount')
-        // .addGroupBy('daily_discount.date')
-        .leftJoin(
-          'daily_discount',
-          'daily_discount',
-          'employee.id = daily_discount.employeeId',
-        )
-        .innerJoin('project', 'project', 'project.id = employee.projectId')
+    //     .andWhere('employee.projectId = :projectId', { projectId })
+    //     .addGroupBy('employee.id')
+    //     .addGroupBy('daily_discount.discount')
+    //      .addGroupBy('daily_discount.hasDiscount')
+    //    //  .addGroupBy('daily_discount.date')
+    //     .leftJoin(
+    //       'daily_discount',
+    //       'daily_discount',
+    //       'employee.id = daily_discount.employeeId',
+    //     )
+    //     .innerJoin('project', 'project', 'project.id = employee.projectId')
 
-        .having('daily_discount.discount IS NULL')
+    //     .having('daily_discount.discount IS NULL')
 
-        // .orHaving('daily_discount.hasDiscount = :hasDiscount', {
-        //   hasDiscount: false,
-        // })
-        // .orHaving('daily_discount.date > :date', {
-        //   date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-        // })
-        .getRawMany(),
-    ]);
-console.log(new Date(new Date().getFullYear(), new Date().getMonth() , 1));
+    //     .orHaving('daily_discount.hasDiscount = :hasDiscount', {
+    //       hasDiscount: false,
+    //     })
+    //     // .orHaving('daily_discount.date > :date', {
+    //     //   date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    //     // })
+    //     .getRawMany(),
+    // ]);
 
-    return [...salariesWithDiscount, ...salariesWithNoDiscount];
+    // return [...salariesWithDiscount, ...salariesWithNoDiscount];
+    const d = await this.EmpRepo.createQueryBuilder('employee')
+     
+      // .where('daily_discount.hasDiscount = :hasDiscount', {
+      //   hasDiscount: null,
+      // })
+      .leftJoinAndSelect(
+        'daily_discount',
+        'daily_discount',
+        'employee.id = daily_discount.employeeId',
+      )
+
+      .getRawMany();
+    console.log(d);
+    // {
+    //   employee_id: 'd217fff6-b880-441a-b54f-9ca1efef8097',
+    //   employee_name: 'خليل',
+    //   employee_salary: 150,
+    //   employee_createdAt: 2022-02-14T15:35:32.028Z,
+    //   employee_updatedAt: 2022-02-14T15:35:32.028Z,
+    //   employee_projectId: '08dcc386-ae99-4c4e-8162-4cdd2e3231ae',
+    //   employee_username: 'kh',
+    //   employee_password: '$2a$10$OKYnGsAVhTNs3fCNHSREnuIUnJpgnpReEcs/R9e7yX4yH1jG45nlG',
+    //   employee_role: 'teacher',
+    //   daily_discount_id: 'b4f8ec2c-01e5-4778-892d-1bd54ac35d39',
+    //   daily_discount_date: 2022-02-14T21:00:00.000Z,
+    //   daily_discount_notes: null,
+    //   daily_discount_discount: '20',
+    //   daily_discount_employeeId: 'd217fff6-b880-441a-b54f-9ca1efef8097',
+    //   daily_discount_hasDiscount: true
+    // },
+
+    return d;
   }
 
   async getEmployeesByProject(
