@@ -1,3 +1,4 @@
+import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Employee } from './../../employee/entity/employee';
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
@@ -35,4 +36,11 @@ export class Project {
   @OneToMany(() => Employee, (employee) => employee.project)
   @Field(() => [Employee], { nullable: true })
   employees: Employee[];
+
+  @OneToMany(
+    () => CurrentMonthDiscount,
+    (currentMonthDiscount) => currentMonthDiscount.project,
+  )
+  @Field(() => [CurrentMonthDiscount], { nullable: true })
+  currentMonthDiscounts: CurrentMonthDiscount[];
 }

@@ -1,7 +1,16 @@
-import { Field } from '@nestjs/graphql';
+import { Project } from './../../project/entity/project';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entity/employee';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@ObjectType()
 @Entity()
 export class CurrentMonthDiscount {
   @Field()
@@ -35,4 +44,20 @@ export class CurrentMonthDiscount {
   @Column()
   @Field()
   employeeId: string;
+
+  @ManyToOne(() => Project, (project) => project.currentMonthDiscounts)
+  @Field(() => Project)
+  project: Project;
+
+  @Column()
+  @Field()
+  projectId: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  @Field()
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  @Field()
+  updatedAt: Date;
 }

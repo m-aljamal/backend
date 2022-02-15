@@ -5,7 +5,11 @@ import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
 import { Employee, Role } from './entity/employee';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { Observable, from, throwError } from 'rxjs';
@@ -152,6 +156,10 @@ export class EmployeeService {
   }
 
   async getEmployeeById(id: string): Promise<Employee> {
-    return await this.EmpRepo.findOne({ id });
+    const employee = await this.EmpRepo.findOne({ id });
+    if (!employee) {
+      throw new NotFoundException('الموظف غير موجود');
+    }
+    return employee;
   }
 }
