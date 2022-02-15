@@ -1,5 +1,5 @@
-import { Role } from 'src/employee/entity/employee';
 import { ArgsType, Field, registerEnumType } from '@nestjs/graphql';
+import { Role } from 'src/utils/types';
 
 @ArgsType()
 export class EmployeeArgs {

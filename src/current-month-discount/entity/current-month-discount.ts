@@ -45,14 +45,6 @@ export class CurrentMonthDiscount {
   @Field()
   employeeId: string;
 
-  @ManyToOne(() => Project, (project) => project.currentMonthDiscounts)
-  @Field(() => Project)
-  project: Project;
-
-  @Column()
-  @Field()
-  projectId: string;
-
   @CreateDateColumn({ type: 'timestamp' })
   @Field()
   createdAt: Date;

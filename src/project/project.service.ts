@@ -1,6 +1,10 @@
 import { ProjectArgs } from './dto/project.args';
 import { Project } from './entity/project';
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/createProject.dto';
@@ -11,6 +15,7 @@ export class ProjectService {
     @InjectRepository(Project)
     private readonly projectRepo: Repository<Project>,
   ) {}
+
   findAll(projectArgs: ProjectArgs) {
     return this.projectRepo.find({
       relations: ['employees'],
@@ -18,11 +23,26 @@ export class ProjectService {
     });
   }
 
-  createProject(project: CreateProjectDto) {
+  async createProject(project: CreateProjectDto) {
+    const findProject = await this.projectRepo.findOne({
+      where: { name: project.name },
+    });
+
+    if (findProject) {
+      throw new BadRequestException(`المشروع باسم ${project.name} موجود مسبقا`);
+    }
+
     return this.projectRepo.save(project);
   }
 
   findOne(id: string) {
-    return this.projectRepo.findOne(id);
+    const project = this.projectRepo.findOne({
+      where: { id },
+      relations: ['employees'],
+    });
+    if (!project) {
+      throw new NotFoundException('لم يتم العثور على المشروع');
+    }
+    return project;
   }
 }

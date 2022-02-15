@@ -19,11 +19,6 @@ export class CurrentMonthDiscountResolver {
     private readonly employeeService: EmployeeService,
   ) {}
 
-  @Query(() => [CurrentMonthDiscount], { name: 'findDiscountsByProjectId' })
-  async findAll(@Args('projectId') projectId: string) {
-    return await this.service.findAll(projectId);
-  }
-
   @Mutation(() => CurrentMonthDiscount, { name: 'createDiscount' })
   async create(@Args('discount') discount: CurrentMonthDiscountDto) {
     return await this.service.create(discount);

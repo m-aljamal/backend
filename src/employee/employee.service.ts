@@ -4,7 +4,7 @@ import { hashPassword } from './../utils/hashPassword';
 import { Project } from 'src/project/entity/project';
 import { ProjectService } from './../project/project.service';
 import { EmployeeDto } from './dto/employee.dto';
-import { Employee, Role } from './entity/employee';
+import { Employee } from './entity/employee';
 import {
   BadRequestException,
   Injectable,
@@ -14,6 +14,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { Observable, from, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Role } from 'src/utils/types';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -51,80 +52,28 @@ export class EmployeeService {
   }
 
   async getEmployee(id: string): Promise<Employee> {
-    const employee = await this.EmpRepo.findOne({ id });
     return await this.EmpRepo.findOne({ id });
   }
 
-  async salariesByCurrentMonth(projectId: string) {
-    // const [salariesWithDiscount, salariesWithNoDiscount] = await Promise.all([
-    //   await this.EmpRepo.createQueryBuilder('employee')
-    //     .addSelect('SUM(daily_discount.discount)', 'discount')
-    //     .addSelect('daily_discount.employeeId', 'employeeId')
-    //     .where('daily_discount.date > :date', {
-    //       date: new Date(new Date().getFullYear(), new Date().getMonth(), 0),
-    //     })
-    //     .andWhere('daily_discount.hasDiscount = :hasDiscount', {
-    //       hasDiscount: true,
-    //     })
-    //     .andWhere('employee.projectId = :projectId', { projectId })
-    //     .addGroupBy('employee.id')
-    //     .addGroupBy('daily_discount.employeeId')
-    //     .leftJoin(
-    //       'daily_discount',
-    //       'daily_discount',
-    //       'employee.id = daily_discount.employeeId',
-    //     )
-    //     .innerJoin('project', 'project', 'project.id = employee.projectId')
-    //     .getRawMany(),
+  async findSalaries(projectId: string) {
+    return await this.EmpRepo.createQueryBuilder('employee')
 
-    //   await this.EmpRepo.createQueryBuilder('employee')
+      .select('employee.id', 'id')
+      .addSelect('employee.name', 'name')
+      .addSelect('employee.salary', 'salary')
+      .addSelect('SUM(current_month_discount.late)', 'late')
+      .addSelect('SUM(current_month_discount.absence)', 'absence')
+      .addSelect('SUM(current_month_discount.punishment)', 'punishment')
 
-    //     .andWhere('employee.projectId = :projectId', { projectId })
-    //     .addGroupBy('employee.id')
-    //     .addGroupBy('daily_discount.discount')
-    //      .addGroupBy('daily_discount.hasDiscount')
-    //    //  .addGroupBy('daily_discount.date')
-    //     .leftJoin(
-    //       'daily_discount',
-    //       'daily_discount',
-    //       'employee.id = daily_discount.employeeId',
-    //     )
-    //     .innerJoin('project', 'project', 'project.id = employee.projectId')
-
-    //     .having('daily_discount.discount IS NULL')
-
-    //     .orHaving('daily_discount.hasDiscount = :hasDiscount', {
-    //       hasDiscount: false,
-    //     })
-    //     // .orHaving('daily_discount.date > :date', {
-    //     //   date: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-    //     // })
-    //     .getRawMany(),
-    // ]);
-
-    // return [...salariesWithDiscount, ...salariesWithNoDiscount];
-    const d = await this.EmpRepo.createQueryBuilder('employee')
-
-      .addSelect('SUM(daily_discount.discount)', 'discount')
-      .andWhere('employee.projectId = :projectId', { projectId })
-      .addGroupBy('employee.id')
-      .addGroupBy('daily_discount.employeeId')
-      .addGroupBy('daily_discount.hasDiscount')
-      .addGroupBy('daily_discount.discount')
+      .where('employee.projectId = :projectId', { projectId })
       .leftJoin(
-        'daily_discount',
-        'daily_discount',
-        'employee.id = daily_discount.employeeId',
+        'current_month_discount',
+        'current_month_discount',
+        'employee.id = current_month_discount.employeeId',
       )
-      .innerJoin('project', 'project', 'project.id = employee.projectId')
-      .having('daily_discount.hasDiscount = :hasDiscount', {
-        hasDiscount: true,
-      })
-      .orHaving('daily_discount.discount IS NULL')
+      .addGroupBy('employee.id')
+      .addGroupBy('current_month_discount.employeeId')
       .getRawMany();
-    console.log(d);
-
-    return d;
   }
 
   async getEmployeesByProject(
@@ -135,7 +84,7 @@ export class EmployeeService {
         projectId: projectEmployees.projectId,
         role: Not(Role.ADMIN),
       },
-      relations: ['project', 'dailyDiscounts'],
+      relations: ['project', 'currentMonthDiscounts'],
       order: { createdAt: projectEmployees.sortBy },
     });
   }

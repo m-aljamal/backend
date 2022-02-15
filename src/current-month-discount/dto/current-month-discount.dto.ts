@@ -19,7 +19,4 @@ export class CurrentMonthDiscountDto {
 
   @Field()
   employeeId: string;
-
-  @Field()
-  projectId: string;
 }

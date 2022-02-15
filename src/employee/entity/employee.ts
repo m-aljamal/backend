@@ -11,16 +11,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from 'src/utils/types';
 
-export enum Role {
-  ADMIN = 'admin',
-  MANGER = 'MANGER',
-  TEACHER = 'teacher',
-}
-
-registerEnumType(Role, {
-  name: 'Role',
-});
 @ObjectType('Employee')
 @Entity()
 export class Employee {

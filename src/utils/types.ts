@@ -7,3 +7,13 @@ export enum Sort {
 registerEnumType(Sort, {
   name: 'Sort',
 });
+
+export enum Role {
+  ADMIN = 'admin',
+  MANGER = 'MANGER',
+  TEACHER = 'teacher',
+}
+
+registerEnumType(Role, {
+  name: 'Role',
+});

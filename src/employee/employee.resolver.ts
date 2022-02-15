@@ -11,13 +11,14 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { EmployeeService } from './employee.service';
-import { Employee, Role } from './entity/employee';
+import { Employee } from './entity/employee';
 import { Project } from 'src/project/entity/project';
 import { Salaries } from './entity/salaries';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { EmployeeArgs } from './dto/findEmployee.args';
+import { Role } from 'src/utils/types';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -38,9 +39,9 @@ export class EmployeeResolver {
     return await this.employeeService.getEmployeesByProject(projectEmployees);
   }
 
-  @Query(() => [Salaries], { name: 'salariesbycurrentMonth' })
-  async salariesByCurrentMonth(@Args('projectId') projectId: string) {
-    return await this.employeeService.salariesByCurrentMonth(projectId);
+  @Query(() => [Salaries], { name: 'findProjectEmployeesSalaries' })
+  async findSalaries(@Args('projectId') projectId: string) {
+    return await this.employeeService.findSalaries(projectId);
   }
 
   @Query(() => Employee, { name: 'findEmployeeById' })

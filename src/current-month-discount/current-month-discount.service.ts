@@ -13,21 +13,13 @@ export class CurrentMonthDiscountService {
     private readonly employeeService: EmployeeService,
   ) {}
 
-  async findAll(projectId: string): Promise<CurrentMonthDiscount[]> {
-    return await this.repo.find({
-      where: { projectId },
-      order: { date: 'ASC' },
-    });
-  }
-
   async delete(id: string) {
     return await this.repo.delete(id);
   }
 
   async create(discount: CurrentMonthDiscountDto) {
     const TOTAL_DAYS_IN_MONTH = 30;
-    const { late, absence, punishment, employeeId, projectId, date, notes } =
-      discount;
+    const { late, absence, punishment, employeeId, date, notes } = discount;
 
     const { salary } = await this.employeeService.getEmployeeById(employeeId);
 
@@ -40,7 +32,6 @@ export class CurrentMonthDiscountService {
         : null,
       notes: notes,
       punishment: punishment ? Math.round((salary / 100) * punishment) : null,
-      projectId: projectId,
     });
   }
 }

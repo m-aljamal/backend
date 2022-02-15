@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import { Role } from '../entity/employee';
+import { Role } from 'src/utils/types';
 
 @InputType()
 export class EmployeeDto {

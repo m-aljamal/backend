@@ -5,17 +5,20 @@ import { Entity } from 'typeorm';
 @Entity()
 export class Salaries {
   @Field()
-  employee_id: string;
+  id: string;
 
   @Field()
-  employee_name: string;
+  name: string;
 
   @Field((type) => Number)
-  employee_salary: number;
-
-  @Field()
-  employee_projectId: string;
+  salary: number;
 
   @Field({ nullable: true })
-  discount: string;
+  late: string;
+
+  @Field({ nullable: true })
+  absence: string;
+
+  @Field({ nullable: true })
+  punishment: string;
 }
