@@ -100,35 +100,25 @@ export class EmployeeService {
 
     // return [...salariesWithDiscount, ...salariesWithNoDiscount];
     const d = await this.EmpRepo.createQueryBuilder('employee')
-     
-      // .where('daily_discount.hasDiscount = :hasDiscount', {
-      //   hasDiscount: null,
-      // })
-      .leftJoinAndSelect(
+
+      .addSelect('SUM(daily_discount.discount)', 'discount')
+      .andWhere('employee.projectId = :projectId', { projectId })
+      .addGroupBy('employee.id')
+      .addGroupBy('daily_discount.employeeId')
+      .addGroupBy('daily_discount.hasDiscount')
+      .addGroupBy('daily_discount.discount')
+      .leftJoin(
         'daily_discount',
         'daily_discount',
         'employee.id = daily_discount.employeeId',
       )
-
+      .innerJoin('project', 'project', 'project.id = employee.projectId')
+      .having('daily_discount.hasDiscount = :hasDiscount', {
+        hasDiscount: true,
+      })
+      .orHaving('daily_discount.discount IS NULL')
       .getRawMany();
     console.log(d);
-    // {
-    //   employee_id: 'd217fff6-b880-441a-b54f-9ca1efef8097',
-    //   employee_name: 'خليل',
-    //   employee_salary: 150,
-    //   employee_createdAt: 2022-02-14T15:35:32.028Z,
-    //   employee_updatedAt: 2022-02-14T15:35:32.028Z,
-    //   employee_projectId: '08dcc386-ae99-4c4e-8162-4cdd2e3231ae',
-    //   employee_username: 'kh',
-    //   employee_password: '$2a$10$OKYnGsAVhTNs3fCNHSREnuIUnJpgnpReEcs/R9e7yX4yH1jG45nlG',
-    //   employee_role: 'teacher',
-    //   daily_discount_id: 'b4f8ec2c-01e5-4778-892d-1bd54ac35d39',
-    //   daily_discount_date: 2022-02-14T21:00:00.000Z,
-    //   daily_discount_notes: null,
-    //   daily_discount_discount: '20',
-    //   daily_discount_employeeId: 'd217fff6-b880-441a-b54f-9ca1efef8097',
-    //   daily_discount_hasDiscount: true
-    // },
 
     return d;
   }

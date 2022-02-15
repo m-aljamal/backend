@@ -1,5 +1,5 @@
 import { Discount } from './entity/discounts';
-import { EmployeeService } from './../employee/employee.service';
+import { EmployeeService } from '../employee/employee.service';
 import { DailyDiscountDto } from './dto/daily-discount.dto';
 import { DailyDiscountService } from './daily-discount.service';
 import {

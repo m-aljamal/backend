@@ -1,4 +1,5 @@
-import { DailyDiscount } from './../../daily-discount/entity/daily-discount';
+import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
+import { DailyDiscount } from '../../daily-discount/entity/daily-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
 import {
@@ -50,6 +51,13 @@ export class Employee {
   @OneToMany(() => DailyDiscount, (dailyDiscount) => dailyDiscount.employee, {})
   @Field(() => [DailyDiscount])
   dailyDiscounts: DailyDiscount[];
+
+  @OneToMany(
+    () => CurrentMonthDiscount,
+    (dailyDiscount) => dailyDiscount.employee,
+  )
+  @Field(() => [CurrentMonthDiscount])
+  currentMonthDiscounts: CurrentMonthDiscount[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })

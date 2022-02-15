@@ -1,4 +1,4 @@
-import { EmployeeModule } from './../employee/employee.module';
+import { EmployeeModule } from '../employee/employee.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { DailyDiscountService } from './daily-discount.service';
