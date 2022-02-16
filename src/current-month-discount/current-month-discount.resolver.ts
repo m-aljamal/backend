@@ -31,6 +31,6 @@ export class CurrentMonthDiscountResolver {
 
   @ResolveField(() => CurrentMonthDiscount)
   async employee(@Parent() employee: CurrentMonthDiscount): Promise<Employee> {
-    return await this.employeeService.getEmployee(employee.employeeId);
+    return await this.employeeService.getEmployeeById(employee.employeeId);
   }
 }

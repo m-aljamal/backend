@@ -19,17 +19,21 @@ import { CurrentUser } from 'src/auth/current-user.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { Role } from 'src/utils/types';
+import { ProjectService } from 'src/project/project.service';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
-  constructor(private readonly employeeService: EmployeeService) {}
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly projectService: ProjectService,
+  ) {}
 
-  @hasRoles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @hasRoles(Role.MANGER)
-  @Query(() => [Employee], { name: 'employees' })
-  async getEmployees(@Args() roleArgs: EmployeeArgs): Promise<Employee[]> {
-    return await this.employeeService.getEmployees(roleArgs);
+  // @hasRoles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @hasRoles(Role.MANGER)
+  @Query(() => [Employee], { name: 'findAllEmployees' })
+  async findAllEmployees(@Args() args: EmployeeArgs): Promise<Employee[]> {
+    return await this.employeeService.findAllEmployees(args);
   }
 
   @Query(() => [Employee], { name: 'findEmployeesByProjectId' })
@@ -64,6 +68,6 @@ export class EmployeeResolver {
 
   @ResolveField(() => Employee)
   async project(@Parent() employee: Employee): Promise<Project> {
-    return await this.employeeService.getProject(employee.projectId);
+    return await this.projectService.findOne(employee.projectId);
   }
 }

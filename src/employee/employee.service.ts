@@ -1,8 +1,7 @@
 import { ProjectEmployeesArgs } from './dto/employee.args';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { hashPassword } from './../utils/hashPassword';
-import { Project } from 'src/project/entity/project';
-import { ProjectService } from './../project/project.service';
+
 import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
 import {
@@ -12,22 +11,24 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { Observable, from, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Role } from 'src/utils/types';
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
     private readonly EmpRepo: Repository<Employee>,
-    private readonly projectService: ProjectService,
   ) {}
 
-  async getEmployees(roleArgs: EmployeeArgs) {
-    return await this.EmpRepo.find({
-      relations: ['project', 'dailyDiscounts'],
-      where: { role: roleArgs.role },
-    });
+  async findAllEmployees(args: EmployeeArgs): Promise<Employee[]> {
+    const query = this.EmpRepo.createQueryBuilder('employee');
+    if (args.role) query.andWhere('employee.role = :role', { role: args.role });
+
+    if (args.projectId)
+      query.andWhere('employee.projectId = :projectId', {
+        projectId: args.projectId,
+      });
+
+    return await query.getMany();
   }
 
   async createEmployee(employee: EmployeeDto): Promise<Employee> {
@@ -47,13 +48,9 @@ export class EmployeeService {
     return await this.EmpRepo.save(newEmployee);
   }
 
-  getProject(projectId: string): Promise<Project> {
-    return this.projectService.findOne(projectId);
-  }
-
-  async getEmployee(id: string): Promise<Employee> {
-    return await this.EmpRepo.findOne({ id });
-  }
+  // async getEmployee(id: string): Promise<Employee> {
+  //   return await this.EmpRepo.findOne({ id });
+  // }
 
   async findSalaries(projectId: string) {
     return await this.EmpRepo.createQueryBuilder('employee')
@@ -93,16 +90,16 @@ export class EmployeeService {
     return await this.EmpRepo.findOne({ username });
   }
 
-  async findOne(id: string) {
-    return from(this.EmpRepo.findOne({ id })).pipe(
-      map((employee) => {
-        if (!employee) {
-          throw new BadRequestException('الموظف غير موجود');
-        }
-        return employee;
-      }),
-    );
-  }
+  // async findOne(id: string) {
+  //   return from(this.EmpRepo.findOne({ id })).pipe(
+  //     map((employee) => {
+  //       if (!employee) {
+  //         throw new BadRequestException('الموظف غير موجود');
+  //       }
+  //       return employee;
+  //     }),
+  //   );
+  // }
 
   async getEmployeeById(id: string): Promise<Employee> {
     const employee = await this.EmpRepo.findOne({ id });
