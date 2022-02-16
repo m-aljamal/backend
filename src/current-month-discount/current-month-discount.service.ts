@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CurrentMonthDiscountDto } from './dto/current-month-discount.dto';
 import { EmployeeService } from 'src/employee/employee.service';
+import { FindDiscountArgs } from './dto/findDiscountArgs';
 
 @Injectable()
 export class CurrentMonthDiscountService {
@@ -33,5 +34,33 @@ export class CurrentMonthDiscountService {
       notes: notes,
       punishment: punishment ? Math.round((salary / 100) * punishment) : null,
     });
+  }
+
+  async findDiscounts(args: FindDiscountArgs) {
+    const query = this.repo
+      .createQueryBuilder('current_month_discount')
+      .leftJoinAndSelect(
+        'employee',
+        'employee',
+        'current_month_discount.employeeId = employee.id',
+      );
+    if (args.sortBy) {
+      query.orderBy(`current_month_discount.createdAt`, `${args.sortBy}`);
+    }
+    if (args.projectId) {
+      query.andWhere(`employee.projectId = :projectId`, {
+        projectId: args.projectId,
+      });
+    }
+    query.select('current_month_discount.id', 'id');
+    query.addSelect('current_month_discount.date', 'date');
+    query.addSelect('current_month_discount.late', 'late');
+    query.addSelect('current_month_discount.absence', 'absence');
+    query.addSelect('current_month_discount.punishment', 'punishment');
+    query.addSelect('current_month_discount.notes', 'notes');
+    query.addSelect('current_month_discount.createdAt', 'createdAt');
+    query.addSelect('employee.id', 'employeeId');
+
+    return await query.getRawMany();
   }
 }
