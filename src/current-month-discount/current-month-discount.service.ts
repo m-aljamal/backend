@@ -53,7 +53,7 @@ export class CurrentMonthDiscountService {
         projectId: args.projectId,
       });
     }
-    if (args.approved) {
+    if (args.approved === true || args.approved === false) {
       query.andWhere(`current_month_discount.approved = :approved`, {
         approved: args.approved,
       });
