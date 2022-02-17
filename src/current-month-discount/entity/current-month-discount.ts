@@ -52,4 +52,8 @@ export class CurrentMonthDiscount {
   @UpdateDateColumn({ type: 'timestamp' })
   @Field()
   updatedAt: Date;
+
+  @Field()
+  @Column({ default: false })
+  approved: boolean;
 }

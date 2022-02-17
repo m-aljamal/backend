@@ -1,3 +1,4 @@
+import { UpdateCurrentMonthDiscountDto } from './dto/update-current-month-discount';
 import { CurrentMonthDiscountService } from './current-month-discount.service';
 import {
   Resolver,
@@ -35,6 +36,13 @@ export class CurrentMonthDiscountResolver {
     return await this.service.findDiscounts(args);
   }
 
+  @Mutation(() => CurrentMonthDiscount, { name: 'updateDiscount' })
+  async update(
+    @Args('id') id: string,
+    @Args('discount') updateDiscount: UpdateCurrentMonthDiscountDto,
+  ) {
+    return await this.service.update(id, updateDiscount);
+  }
   @ResolveField(() => CurrentMonthDiscount)
   async employee(@Parent() employee: CurrentMonthDiscount): Promise<Employee> {
     return await this.employeeService.getEmployeeById(employee.employeeId);

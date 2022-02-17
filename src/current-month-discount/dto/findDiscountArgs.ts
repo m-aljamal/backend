@@ -8,4 +8,7 @@ export class FindDiscountArgs {
 
   @Field({ nullable: true })
   projectId?: string;
+
+  @Field({ nullable: true })
+  approved?: boolean;
 }

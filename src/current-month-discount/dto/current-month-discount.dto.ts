@@ -19,4 +19,7 @@ export class CurrentMonthDiscountDto {
 
   @Field()
   employeeId: string;
+
+  @Field({ nullable: true })
+  approved: boolean;
 }

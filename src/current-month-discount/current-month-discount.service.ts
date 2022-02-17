@@ -1,5 +1,6 @@
+import { UpdateCurrentMonthDiscountDto } from './dto/update-current-month-discount';
 import { CurrentMonthDiscount } from './entity/current-month-discount';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CurrentMonthDiscountDto } from './dto/current-month-discount.dto';
@@ -52,6 +53,11 @@ export class CurrentMonthDiscountService {
         projectId: args.projectId,
       });
     }
+    if (args.approved) {
+      query.andWhere(`current_month_discount.approved = :approved`, {
+        approved: args.approved,
+      });
+    }
     query.select('current_month_discount.id', 'id');
     query.addSelect('current_month_discount.date', 'date');
     query.addSelect('current_month_discount.late', 'late');
@@ -59,8 +65,15 @@ export class CurrentMonthDiscountService {
     query.addSelect('current_month_discount.punishment', 'punishment');
     query.addSelect('current_month_discount.notes', 'notes');
     query.addSelect('current_month_discount.createdAt', 'createdAt');
+    query.addSelect('current_month_discount.approved', 'approved');
     query.addSelect('employee.id', 'employeeId');
 
     return await query.getRawMany();
+  }
+
+  async update(id: string, updateDiscount: UpdateCurrentMonthDiscountDto) {
+    const currentDiscount = await this.repo.findOne(id);
+    if (!currentDiscount) throw new NotFoundException('الخصم غير موجود');
+    return await this.repo.save({ ...currentDiscount, ...updateDiscount });
   }
 }
