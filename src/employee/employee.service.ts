@@ -54,14 +54,26 @@ export class EmployeeService {
 
   async findSalaries(projectId: string) {
     return await this.EmpRepo.createQueryBuilder('employee')
-
       .select('employee.id', 'id')
       .addSelect('employee.name', 'name')
       .addSelect('employee.salary', 'salary')
-      .addSelect('SUM(current_month_discount.late)', 'late')
-      .addSelect('SUM(current_month_discount.absence)', 'absence')
-      .addSelect('SUM(current_month_discount.punishment)', 'punishment')
 
+      .addSelect(
+        ' COALESCE(SUM(current_month_discount.late ),0)::INTEGER',
+        'late',
+      )
+      .addSelect(
+        'COALESCE(SUM(current_month_discount.absence ),0)::INTEGER',
+        'absence',
+      )
+      .addSelect(
+        'COALESCE(SUM(current_month_discount.punishment),0)::INTEGER',
+        'punishment',
+      )
+      .addSelect(
+        'salary - COALESCE(SUM(current_month_discount.punishment ),0)::INTEGER - COALESCE(SUM(current_month_discount.absence ),0)::INTEGER - COALESCE(SUM(current_month_discount.late ),0)::INTEGER ',
+        'totalSalart',
+      )
       .where('employee.projectId = :projectId', { projectId })
       .leftJoin(
         'current_month_discount',

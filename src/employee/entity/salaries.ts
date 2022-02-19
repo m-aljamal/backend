@@ -21,4 +21,7 @@ export class Salaries {
 
   @Field({ nullable: true })
   punishment: string;
+
+  @Field(() => Number)
+  totalSalart: number;
 }
