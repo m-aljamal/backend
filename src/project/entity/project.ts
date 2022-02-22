@@ -18,7 +18,11 @@ export class Project {
 
   @Field()
   @Column()
-  name: string;
+  nameAr: string;
+
+  @Field()
+  @Column()
+  nameEn: string;
 
   @Field()
   @Column()

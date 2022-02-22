@@ -25,11 +25,13 @@ export class ProjectService {
 
   async createProject(project: CreateProjectDto) {
     const findProject = await this.projectRepo.findOne({
-      where: { name: project.name },
+      where: { nameEn: project.nameEn },
     });
 
     if (findProject) {
-      throw new BadRequestException(`المشروع باسم ${project.name} موجود مسبقا`);
+      throw new BadRequestException(
+        `المشروع باسم ${project.nameAr} موجود مسبقا`,
+      );
     }
 
     return this.projectRepo.save(project);
