@@ -1,3 +1,4 @@
+import { JopTitle } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
@@ -65,4 +66,42 @@ export class Employee {
   })
   @Field(() => Role)
   role: Role;
+
+  @Column({ nullable: true })
+  @Field(() => JopTitle, { nullable: true })
+  jopTitle: JopTitle;
+
+  @Column('json', { nullable: true })
+  @Field(() => [Division], { nullable: true })
+  divisions: Division[];
+
+  @Column('json', { nullable: true })
+  @Field(() => [Level], { nullable: true })
+  levels: Level[];
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  avatar: string;
+}
+
+@ObjectType()
+class Level {
+  @Field((type) => Number, { nullable: true })
+  @Column({ nullable: true })
+  levelNumber: Number;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  levelString: String;
+}
+
+@ObjectType()
+class Division {
+  @Field((type) => Number, { nullable: true })
+  @Column({ nullable: true })
+  divisionNumber: Number;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  divisionString: String;
 }

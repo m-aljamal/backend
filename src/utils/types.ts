@@ -17,3 +17,19 @@ export enum Role {
 registerEnumType(Role, {
   name: 'Role',
 });
+
+export enum JopTitle {
+  SUPERVISOR = 'المشرف التربوي',
+  HEAD_TEACHERS = 'مدير المدرسة',
+  TEACHER = 'مدرس',
+  DATA_ENTRY = 'مدخل البيانات',
+  SECRETARY = 'امين سر',
+  COUNSELOR = 'مرشد',
+  MEDIA = 'إعالمي ',
+  CLEANER = 'مستخدم',
+  GUARD = 'حارس',
+}
+
+registerEnumType(JopTitle, {
+  name: 'JopTitle',
+});
