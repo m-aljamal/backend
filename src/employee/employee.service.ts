@@ -12,6 +12,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { JobTitle, Role } from 'src/utils/types';
+import { EmployeesByRole } from './entity/EmployeeByType';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -98,24 +99,33 @@ export class EmployeeService {
     return await this.EmpRepo.findOne({ username });
   }
 
-  async findEmployeeByJobTitle(projectId: string) {
-    const [t,r] = await Promise.all([
-      await this.EmpRepo.find({
+  async findEmployeesByRole(projectId: string): Promise<EmployeesByRole> {
+    const [mangers, teachers, services] = await Promise.all([
+      this.EmpRepo.find({
         where: {
           projectId,
           role: Role.MANGER,
         },
       }),
-      await this.EmpRepo.find({
+      this.EmpRepo.find({
         where: {
           projectId,
           role: Role.TEACHER,
         },
       }),
+      this.EmpRepo.find({
+        where: {
+          projectId,
+          role: Role.SERVICE,
+        },
+      }),
     ]);
-    console.log(r);
- 
-    
+
+    return {
+      mangers,
+      teachers,
+      services,
+    };
   }
 
   async getEmployeeById(id: string): Promise<Employee> {

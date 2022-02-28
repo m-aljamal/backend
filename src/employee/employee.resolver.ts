@@ -20,6 +20,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { Role } from 'src/utils/types';
 import { ProjectService } from 'src/project/project.service';
+import { EmployeesByRole } from './entity/EmployeeByType';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -59,9 +60,11 @@ export class EmployeeResolver {
     return user;
   }
 
-  @Query(()=> [Employee],{name: 'findEmployeesByJobTitle'})
-  async findEmployeeByJobTitle(@Args('projectId') projectId: string){
-    return await this.employeeService.findEmployeeByJobTitle(projectId);
+  @Query(() => EmployeesByRole, { name: 'findEmployeesByRole' })
+  async findEmployeesByRole(
+    @Args('projectId') projectId: string,
+  ): Promise<EmployeesByRole> {
+    return await this.employeeService.findEmployeesByRole(projectId);
   }
 
   @Mutation(() => Employee)
