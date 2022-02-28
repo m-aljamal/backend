@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import { JopTitle, Role } from 'src/utils/types';
+import { JobTitle, Role } from 'src/utils/types';
 
 @InputType()
 export class EmployeeDto {
@@ -23,8 +23,8 @@ export class EmployeeDto {
   @Field(() => Role, { defaultValue: Role.TEACHER })
   role: Role;
 
-  @Field(() => JopTitle, { nullable: true })
-  jopTitle: JopTitle;
+  @Field(() => JobTitle, { nullable: true })
+  jobTitle: JobTitle;
 
   @Field(() => [DivisionInput], { nullable: true })
   divisions: DivisionInput[];

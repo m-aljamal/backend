@@ -18,7 +18,7 @@ registerEnumType(Role, {
   name: 'Role',
 });
 
-export enum JopTitle {
+export enum JobTitle {
   SUPERVISOR = 'المشرف التربوي',
   HEAD_TEACHERS = 'مدير المدرسة',
   TEACHER = 'مدرس',
@@ -30,6 +30,6 @@ export enum JopTitle {
   GUARD = 'حارس',
 }
 
-registerEnumType(JopTitle, {
+registerEnumType(JobTitle, {
   name: 'JopTitle',
 });
