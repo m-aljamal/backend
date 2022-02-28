@@ -120,7 +120,8 @@ export class EmployeeService {
         },
       }),
     ]);
-
+    console.log(mangers);
+    
     return {
       mangers,
       teachers,

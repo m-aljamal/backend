@@ -1,4 +1,4 @@
-import { JobTitle } from './../../utils/types';
+import { JobTitle, Levels, Divisions, Job_Title } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
@@ -68,8 +68,8 @@ export class Employee {
   role: Role;
 
   @Column({ nullable: true })
-  @Field(() => JobTitle, { nullable: true })
-  jobTitle: JobTitle;
+  @Field(() => Job_Title, { nullable: true })
+  jobTitle: Job_Title;
 
   @Column('json', { nullable: true })
   @Field(() => [Division], { nullable: true })
@@ -90,9 +90,9 @@ class Level {
   @Column({ nullable: true })
   levelNumber: Number;
 
-  @Field({ nullable: true })
+  @Field(() => Levels, { nullable: true })
   @Column({ nullable: true })
-  levelString: String;
+  levelString: Levels;
 }
 
 @ObjectType()
@@ -101,7 +101,7 @@ class Division {
   @Column({ nullable: true })
   divisionNumber: Number;
 
-  @Field({ nullable: true })
+  @Field(() => Divisions, { nullable: true })
   @Column({ nullable: true })
-  divisionString: String;
+  divisionString: Divisions;
 }
