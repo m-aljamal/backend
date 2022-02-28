@@ -10,8 +10,9 @@ registerEnumType(Sort, {
 
 export enum Role {
   ADMIN = 'admin',
-  MANGER = 'MANGER',
+  MANGER = 'manger',
   TEACHER = 'teacher',
+  SERVICE = 'service',
 }
 
 registerEnumType(Role, {
@@ -19,17 +20,17 @@ registerEnumType(Role, {
 });
 
 export enum JobTitle {
-  SUPERVISOR = 'المشرف التربوي',
-  HEAD_TEACHERS = 'مدير المدرسة',
-  TEACHER = 'مدرس',
-  DATA_ENTRY = 'مدخل البيانات',
-  SECRETARY = 'امين سر',
-  COUNSELOR = 'مرشد',
-  MEDIA = 'إعالمي ',
-  CLEANER = 'مستخدم',
-  GUARD = 'حارس',
+  SUPERVISOR = 'supervisor',
+  HEAD_TEACHERS = 'headTeachers',
+  TEACHER = 'teacher',
+  DATA_ENTRY = 'dataEntry',
+  SECRETARY = 'secretary',
+  COUNSELOR = 'counselor',
+  MEDIA = 'media',
+  CLEANER = 'cleaner',
+  GUARD = 'guard',
 }
 
 registerEnumType(JobTitle, {
-  name: 'JopTitle',
+  name: 'JobTitle',
 });

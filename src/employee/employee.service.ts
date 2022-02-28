@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { Role } from 'src/utils/types';
+import { JobTitle, Role } from 'src/utils/types';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -47,10 +47,6 @@ export class EmployeeService {
     });
     return await this.EmpRepo.save(newEmployee);
   }
-
-  // async getEmployee(id: string): Promise<Employee> {
-  //   return await this.EmpRepo.findOne({ id });
-  // }
 
   async findSalaries(projectId: string) {
     return await this.EmpRepo.createQueryBuilder('employee')
@@ -102,16 +98,25 @@ export class EmployeeService {
     return await this.EmpRepo.findOne({ username });
   }
 
-  // async findOne(id: string) {
-  //   return from(this.EmpRepo.findOne({ id })).pipe(
-  //     map((employee) => {
-  //       if (!employee) {
-  //         throw new BadRequestException('الموظف غير موجود');
-  //       }
-  //       return employee;
-  //     }),
-  //   );
-  // }
+  async findEmployeeByJobTitle(projectId: string) {
+    const [t,r] = await Promise.all([
+      await this.EmpRepo.find({
+        where: {
+          projectId,
+          role: Role.MANGER,
+        },
+      }),
+      await this.EmpRepo.find({
+        where: {
+          projectId,
+          role: Role.TEACHER,
+        },
+      }),
+    ]);
+    console.log(r);
+ 
+    
+  }
 
   async getEmployeeById(id: string): Promise<Employee> {
     const employee = await this.EmpRepo.findOne({ id });
