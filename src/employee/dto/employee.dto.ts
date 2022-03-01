@@ -1,7 +1,7 @@
-import { Divisions } from './../../utils/types';
+import { Divisions, JobTitle } from './../../utils/types';
 import { IsNotEmpty } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
-import { JobTitle, Levels, Role } from 'src/utils/types';
+import { Levels, Role } from 'src/utils/types';
 
 @InputType()
 export class EmployeeDto {

@@ -26,7 +26,7 @@ export enum JobTitle {
   DATA_ENTRY = 'مدخل بيانات',
   SECRETARY = 'امين سر',
   COUNSELOR = 'مرشد',
-  MEDIA = 'اعلامي',
+  MEDIA_Fotographer = 'اعلامي',
   CLEANER = 'مستخدم',
   GUARD = 'حارس',
 }

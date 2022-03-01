@@ -1,4 +1,4 @@
-import { JobTitle, Levels, Divisions } from './../../utils/types';
+import { Levels, Divisions, JobTitle } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';

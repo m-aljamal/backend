@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { JobTitle, Role } from 'src/utils/types';
+import { Role, JobTitle } from 'src/utils/types';
 import { EmployeesByRole } from './entity/EmployeeByType';
 @Injectable()
 export class EmployeeService {
@@ -106,6 +106,7 @@ export class EmployeeService {
           projectId,
           role: Role.MANGER,
         },
+        order: { jobTitle: 'ASC' },
       }),
       this.EmpRepo.find({
         where: {
@@ -120,8 +121,8 @@ export class EmployeeService {
         },
       }),
     ]);
-    console.log( "mangerssssss", mangers);
-    
+    console.log(mangers, teachers, services);
+
     return {
       mangers,
       teachers,
