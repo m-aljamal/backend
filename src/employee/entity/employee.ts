@@ -1,4 +1,4 @@
-import { JobTitle, Levels, Divisions, Job_Title } from './../../utils/types';
+import { JobTitle, Levels, Divisions } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
@@ -68,8 +68,8 @@ export class Employee {
   role: Role;
 
   @Column({ nullable: true })
-  @Field(() => Job_Title, { nullable: true })
-  jobTitle: Job_Title;
+  @Field(() => JobTitle, { nullable: true })
+  jobTitle: JobTitle;
 
   @Column('json', { nullable: true })
   @Field(() => [Division], { nullable: true })

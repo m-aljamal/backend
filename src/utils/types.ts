@@ -20,8 +20,8 @@ registerEnumType(Role, {
 });
 
 export enum JobTitle {
-  SUPERVISOR = 'مشرف تربوي',
-  HEAD_TEACHERS = 'المدير',
+  EDUCATION_SUPERVISOR = 'مشرف تربوي',
+  PRINCIPAL = 'المدير',
   TEACHER = 'مدرس',
   DATA_ENTRY = 'مدخل بيانات',
   SECRETARY = 'امين سر',
@@ -33,22 +33,6 @@ export enum JobTitle {
 
 registerEnumType(JobTitle, {
   name: 'JobTitle',
-});
-
-export enum Job_Title {
-  SUPERVISOR = 'مشرف تربوي',
-  HEAD_TEACHERS = 'المدير',
-  TEACHER = 'مدرس',
-  DATA_ENTRY = 'مدخل بيانات',
-  SECRETARY = 'امين سر',
-  COUNSELOR = 'مرشد',
-  MEDIA = 'اعلامي',
-  CLEANER = 'مستخدم',
-  GUARD = 'حارس',
-}
-
-registerEnumType(Job_Title, {
-  name: 'Job_Title',
 });
 
 export enum Levels {

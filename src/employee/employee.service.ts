@@ -120,7 +120,7 @@ export class EmployeeService {
         },
       }),
     ]);
-    console.log(mangers);
+    console.log( "mangerssssss", mangers);
     
     return {
       mangers,
