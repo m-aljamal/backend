@@ -72,10 +72,6 @@ export class Employee {
   jobTitle: JobTitle;
 
   @Column('json', { nullable: true })
-  @Field(() => [Division], { nullable: true })
-  divisions: Division[];
-
-  @Column('json', { nullable: true })
   @Field(() => [Level], { nullable: true })
   levels: Level[];
 
@@ -93,6 +89,10 @@ class Level {
   @Field(() => Levels, { nullable: true })
   @Column({ nullable: true })
   levelString: Levels;
+
+  @Column('json', { nullable: true })
+  @Field(() => [Division], { nullable: true })
+  divisions: Division[];
 }
 
 @ObjectType()

@@ -27,9 +27,6 @@ export class EmployeeDto {
   @Field(() => JobTitle, { nullable: true })
   jobTitle: JobTitle;
 
-  @Field(() => [DivisionInput], { nullable: true })
-  divisions: DivisionInput[];
-
   @Field(() => [LevelInput], { nullable: true })
   levels: LevelInput[];
 
@@ -44,6 +41,9 @@ class LevelInput {
 
   @Field(() => Levels, { nullable: true })
   levelString: Levels;
+
+  @Field(() => [DivisionInput], { nullable: true })
+  divisions: DivisionInput[];
 }
 
 @InputType()
