@@ -6,6 +6,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CurrentMonthDiscountModule } from './current-month-discount/current-month-discount.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -20,12 +21,12 @@ import { CurrentMonthDiscountModule } from './current-month-discount/current-mon
           type: 'postgres',
           host: config.get('DB_HOST'),
 
-          // port: 5432,
-          port: config.get('DB_PORT'),
+           port: 5432,
+          //port: config.get('DB_PORT'),
           username: config.get('DB_USERNAME'),
           password: config.get('DB_PASSWORD'),
-          // database: 'postgres',
-          database: config.get('DB_NAME'),
+           database: 'postgres',
+          //database: config.get('DB_NAME'),
 
           autoLoadEntities: true,
           synchronize: true,
@@ -44,6 +45,7 @@ import { CurrentMonthDiscountModule } from './current-month-discount/current-mon
     EmployeeModule,
     AuthModule,
     CurrentMonthDiscountModule,
+    StudentModule,
   ],
 })
 export class AppModule {}

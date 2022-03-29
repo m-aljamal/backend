@@ -121,7 +121,6 @@ export class EmployeeService {
         },
       }),
     ]);
-    console.log(mangers, teachers, services);
 
     return {
       mangers,
