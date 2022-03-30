@@ -71,37 +71,39 @@ export class Employee {
   @Field(() => JobTitle, { nullable: true })
   jobTitle: JobTitle;
 
-  @Column('json', { nullable: true })
-  @Field(() => [Level], { nullable: true })
-  levels: Level[];
+  // @Column('json', { nullable: true })
+  // @Field(() => [Level], { nullable: true })
+  // levels: Level[];
+
+  
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   avatar: string;
 }
 
-@ObjectType()
-class Level {
-  @Field((type) => Number, { nullable: true })
-  @Column({ nullable: true })
-  levelNumber: Number;
+// @ObjectType()
+// class Level {
+//   @Field((type) => Number, { nullable: true })
+//   @Column({ nullable: true })
+//   levelNumber: Number;
 
-  @Field(() => Levels, { nullable: true })
-  @Column({ nullable: true })
-  levelString: Levels;
+//   @Field(() => Levels, { nullable: true })
+//   @Column({ nullable: true })
+//   levelString: Levels;
 
-  @Column('json', { nullable: true })
-  @Field(() => [Division], { nullable: true })
-  divisions: Division[];
-}
+//   @Column('json', { nullable: true })
+//   @Field(() => [Division], { nullable: true })
+//   divisions: Division[];
+// }
 
-@ObjectType()
-class Division {
-  @Field((type) => Number, { nullable: true })
-  @Column({ nullable: true })
-  divisionNumber: Number;
+// @ObjectType()
+// class Division {
+//   @Field((type) => Number, { nullable: true })
+//   @Column({ nullable: true })
+//   divisionNumber: Number;
 
-  @Field(() => Divisions, { nullable: true })
-  @Column({ nullable: true })
-  divisionString: Divisions;
-}
+//   @Field(() => Divisions, { nullable: true })
+//   @Column({ nullable: true })
+//   divisionString: Divisions;
+// }

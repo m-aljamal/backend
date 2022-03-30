@@ -7,6 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CurrentMonthDiscountModule } from './current-month-discount/current-month-discount.module';
 import { StudentModule } from './student/student.module';
+import { LevelModule } from './level/level.module';
+import { DivisionModule } from './division/division.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { StudentModule } from './student/student.module';
     AuthModule,
     CurrentMonthDiscountModule,
     StudentModule,
+    LevelModule,
+    DivisionModule,
   ],
 })
 export class AppModule {}

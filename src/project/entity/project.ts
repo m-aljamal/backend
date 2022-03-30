@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Level } from 'src/level/entity/level';
 
 @ObjectType()
 @Entity()
@@ -39,4 +40,8 @@ export class Project {
   @OneToMany(() => Employee, (employee) => employee.project)
   @Field(() => [Employee], { nullable: true })
   employees: Employee[];
+
+  @OneToMany(() => Level, (level) => level.project)
+  @Field(() => [Level], { nullable: true })
+  levels: Level[];
 }

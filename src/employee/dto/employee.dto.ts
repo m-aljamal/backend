@@ -27,29 +27,29 @@ export class EmployeeDto {
   @Field(() => JobTitle, { nullable: true })
   jobTitle: JobTitle;
 
-  @Field(() => [LevelInput], { nullable: true })
-  levels: LevelInput[];
+  // @Field(() => [LevelInput], { nullable: true })
+  // levels: LevelInput[];
 
   @Field({ nullable: true })
   avatar: string;
 }
 
-@InputType()
-class LevelInput {
-  @Field((type) => Number, { nullable: true })
-  levelNumber: Number;
+// @InputType()
+// class LevelInput {
+//   @Field((type) => Number, { nullable: true })
+//   levelNumber: Number;
 
-  @Field(() => Levels, { nullable: true })
-  levelString: Levels;
+//   @Field(() => Levels, { nullable: true })
+//   levelString: Levels;
 
-  @Field(() => [DivisionInput], { nullable: true })
-  divisions: DivisionInput[];
-}
+//   @Field(() => [DivisionInput], { nullable: true })
+//   divisions: DivisionInput[];
+// }
 
-@InputType()
-class DivisionInput {
-  @Field((type) => Number, { nullable: true })
-  divisionNumber: Number;
-  @Field(() => Divisions, { nullable: true })
-  divisionString: Divisions;
-}
+// @InputType()
+// class DivisionInput {
+//   @Field((type) => Number, { nullable: true })
+//   divisionNumber: Number;
+//   @Field(() => Divisions, { nullable: true })
+//   divisionString: Divisions;
+// }
