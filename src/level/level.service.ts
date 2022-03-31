@@ -29,4 +29,8 @@ export class LevelService {
       relations: ['students', 'divisions'],
     });
   }
+
+  async findOne(id: string) {
+    return await this.levelRepo.findOne(id);
+  }
 }
