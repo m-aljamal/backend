@@ -13,11 +13,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { Role, JobTitle } from 'src/utils/types';
 import { EmployeesByRole } from './entity/EmployeeByType';
+import { LevelService } from 'src/level/level.service';
 @Injectable()
 export class EmployeeService {
   constructor(
     @InjectRepository(Employee)
     private readonly EmpRepo: Repository<Employee>,
+    private readonly levelService: LevelService,
   ) {}
 
   async findAllEmployees(args: EmployeeArgs): Promise<Employee[]> {
@@ -42,9 +44,19 @@ export class EmployeeService {
       throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
 
+    const levels = await Promise.all(
+      employee.levels.map(async (lev) => {
+        const level = await this.loadLevels(lev, employee.projectId);
+        if (!level) {
+          throw new BadRequestException('المرحلة غير موجودة');
+        }
+        return level;
+      }),
+    );
     newEmployee = this.EmpRepo.create({
       ...employee,
       password: hashPassword(employee.password),
+      levels,
     });
     return await this.EmpRepo.save(newEmployee);
   }
@@ -135,5 +147,9 @@ export class EmployeeService {
       throw new NotFoundException('الموظف غير موجود');
     }
     return employee;
+  }
+
+  private async loadLevels(id: string, schoolId: string) {
+    return await this.levelService.findLevelByProjectId(id, schoolId);
   }
 }

@@ -33,4 +33,11 @@ export class LevelService {
   async findOne(id: string) {
     return await this.levelRepo.findOne(id);
   }
+
+  async findLevelByProjectId(id: string, projectId: string) {
+    return await this.levelRepo.findOne({
+      where: { projectId, id },
+      relations: ['students', 'divisions'],
+    });
+  }
 }

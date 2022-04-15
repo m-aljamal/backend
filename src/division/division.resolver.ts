@@ -6,7 +6,6 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { Level } from 'src/level/entity/level';
 import { LevelService } from 'src/level/level.service';
 import { DivisionService } from './division.service';
 import { CreateDivision } from './dto/create-division';

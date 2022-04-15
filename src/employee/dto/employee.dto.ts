@@ -27,6 +27,9 @@ export class EmployeeDto {
   @Field(() => JobTitle, { nullable: true })
   jobTitle: JobTitle;
 
+  @Field(() => [String], { nullable: true })
+  levels: string[];
+
   // @Field(() => [LevelInput], { nullable: true })
   // levels: LevelInput[];
 

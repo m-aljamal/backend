@@ -6,12 +6,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from 'src/utils/types';
+import { Level } from 'src/level/entity/level';
 
 @ObjectType('Employee')
 @Entity()
@@ -71,11 +74,14 @@ export class Employee {
   @Field(() => JobTitle, { nullable: true })
   jobTitle: JobTitle;
 
-  // @Column('json', { nullable: true })
-  // @Field(() => [Level], { nullable: true })
-  // levels: Level[];
-
-  
+  @ManyToMany(() => Level, (level) => level.employees, { cascade: true })
+  @Field(() => [Level], { nullable: true })
+  @JoinTable({
+    name: 'employee_level',
+    joinColumn: { name: 'employee_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'level_id', referencedColumnName: 'id' },
+  })
+  levels: Level[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })

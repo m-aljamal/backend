@@ -15,7 +15,7 @@ export class DivisionService {
 
   async createDivision(division: CreateDivision) {
     const findDivision = await this.divisionRepo.findOne({
-      where: { divisionName: division.divisionName },
+      where: { divisionName: division.divisionName, levelId: division.levelId },
     });
 
     if (findDivision)

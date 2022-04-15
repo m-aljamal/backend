@@ -4,11 +4,13 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import {
   Column,
   Entity,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Student } from 'src/student/entity/student';
+import { Employee } from 'src/employee/entity/employee';
 
 @ObjectType()
 @Entity()
@@ -40,4 +42,8 @@ export class Level {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   projectId: string;
+
+  @ManyToMany(() => Employee, (employee) => employee.levels)
+  @Field(() => [Employee], { nullable: true })
+  employees: Employee[];
 }
