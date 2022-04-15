@@ -31,6 +31,8 @@ export class EmployeeService {
         projectId: args.projectId,
       });
 
+    query.leftJoinAndSelect('employee.levels', 'levels');
+
     return await query.getMany();
   }
 
@@ -43,16 +45,18 @@ export class EmployeeService {
     if (newEmployee) {
       throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
-
-    const levels = await Promise.all(
-      employee.levels.map(async (lev) => {
-        const level = await this.loadLevels(lev, employee.projectId);
-        if (!level) {
-          throw new BadRequestException('المرحلة غير موجودة');
-        }
-        return level;
-      }),
-    );
+    let levels = [];
+    if (employee.jobTitle === JobTitle.TEACHER) {
+      levels = await Promise.all(
+        employee.levels.map(async (id) => {
+          const level = await this.loadLevels(id, employee.projectId);
+          if (!level) {
+            throw new BadRequestException('المرحلة غير موجودة');
+          }
+          return level;
+        }),
+      );
+    }
     newEmployee = this.EmpRepo.create({
       ...employee,
       password: hashPassword(employee.password),
