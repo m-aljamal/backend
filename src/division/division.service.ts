@@ -33,4 +33,10 @@ export class DivisionService {
       relations: ['students'],
     });
   }
+  async findDivisionBySchoolId(id: string) {
+    return this.divisionRepo.findOne({
+      where: {id,  },
+      relations: ['students'],
+    });
+  }
 }

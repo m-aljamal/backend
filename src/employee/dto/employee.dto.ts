@@ -30,6 +30,9 @@ export class EmployeeDto {
   @Field(() => [String], { nullable: true })
   levels: string[];
 
+  @Field(() => [String], { nullable: true })
+  divisions: string[];
+
   // @Field(() => [LevelInput], { nullable: true })
   // levels: LevelInput[];
 

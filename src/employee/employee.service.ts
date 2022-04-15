@@ -1,3 +1,4 @@
+import { DivisionService } from './../division/division.service';
 import { ProjectEmployeesArgs } from './dto/employee.args';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { hashPassword } from './../utils/hashPassword';
@@ -20,6 +21,7 @@ export class EmployeeService {
     @InjectRepository(Employee)
     private readonly EmpRepo: Repository<Employee>,
     private readonly levelService: LevelService,
+    private readonly divisionService: DivisionService,
   ) {}
 
   async findAllEmployees(args: EmployeeArgs): Promise<Employee[]> {
@@ -46,6 +48,7 @@ export class EmployeeService {
       throw new BadRequestException(' اسم الموظف او اسم المستخدم موجود مسبقا');
     }
     let levels = [];
+    let divisions = [];
     if (employee.jobTitle === JobTitle.TEACHER) {
       levels = await Promise.all(
         employee.levels.map(async (id) => {
@@ -56,11 +59,21 @@ export class EmployeeService {
           return level;
         }),
       );
+      divisions = await Promise.all(
+        employee.divisions.map(async (id) => {
+          const division = await this.loadDivisions(id);
+          if (!division) {
+            throw new BadRequestException('الشعبة غير موجودة');
+          }
+          return division;
+        }),
+      );
     }
     newEmployee = this.EmpRepo.create({
       ...employee,
       password: hashPassword(employee.password),
       levels,
+      divisions,
     });
     return await this.EmpRepo.save(newEmployee);
   }
@@ -153,7 +166,11 @@ export class EmployeeService {
     return employee;
   }
 
-  private async loadLevels(id: string, schoolId: string) {
-    return await this.levelService.findLevelByProjectId(id, schoolId);
+  private async loadLevels(id: string, projectId: string) {
+    return await this.levelService.findLevelByProjectId(id, projectId);
+  }
+
+  private async loadDivisions(id: string) {
+    return await this.divisionService.findDivisionBySchoolId(id);
   }
 }

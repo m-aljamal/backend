@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Employee } from 'src/employee/entity/employee';
 import { Level } from 'src/level/entity/level';
 import { Student } from 'src/student/entity/student';
 import {
@@ -7,6 +8,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 
 @ObjectType()
@@ -35,4 +37,8 @@ export class Division {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   levelId: string;
+
+  @ManyToMany(() => Employee, (employee) => employee.levels)
+  @Field(() => [Employee], { nullable: true })
+  employees: Employee[];
 }

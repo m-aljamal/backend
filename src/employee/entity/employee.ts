@@ -15,6 +15,7 @@ import {
 } from 'typeorm';
 import { Role } from 'src/utils/types';
 import { Level } from 'src/level/entity/level';
+import { Division } from 'src/division/entity/division';
 
 @ObjectType('Employee')
 @Entity()
@@ -82,6 +83,17 @@ export class Employee {
     inverseJoinColumn: { name: 'level_id', referencedColumnName: 'id' },
   })
   levels: Level[];
+
+  @ManyToMany(() => Division, (division) => division.employees, {
+    cascade: true,
+  })
+  @Field(() => [Divisions], { nullable: true })
+  @JoinTable({
+    name: 'employee_division',
+    joinColumn: { name: 'employee_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'division_id', referencedColumnName: 'id' },
+  })
+  divisions: Divisions[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })

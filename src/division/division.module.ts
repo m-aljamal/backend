@@ -8,5 +8,6 @@ import { Division } from './entity/division';
 @Module({
   imports: [TypeOrmModule.forFeature([Division]), LevelModule],
   providers: [DivisionService, DivisionResolver],
+  exports: [DivisionService],
 })
 export class DivisionModule {}
