@@ -1,4 +1,4 @@
-import { Levels, Divisions, JobTitle } from './../../utils/types';
+import {   JobTitle } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
@@ -87,13 +87,13 @@ export class Employee {
   @ManyToMany(() => Division, (division) => division.employees, {
     cascade: true,
   })
-  @Field(() => [Divisions], { nullable: true })
+  @Field(() => [Division], { nullable: true })
   @JoinTable({
     name: 'employee_division',
     joinColumn: { name: 'employee_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'division_id', referencedColumnName: 'id' },
   })
-  divisions: Divisions[];
+  divisions: Division[];
 
   @Column({ nullable: true })
   @Field({ nullable: true })

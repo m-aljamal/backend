@@ -34,6 +34,7 @@ export class EmployeeService {
       });
 
     query.leftJoinAndSelect('employee.levels', 'levels');
+    query.leftJoinAndSelect('employee.divisions', 'divisions');
 
     return await query.getMany();
   }
@@ -159,7 +160,11 @@ export class EmployeeService {
   }
 
   async getEmployeeById(id: string): Promise<Employee> {
-    const employee = await this.EmpRepo.findOne({ id });
+    const employee = await this.EmpRepo.findOne({
+      where: { id },
+      relations: ['project', 'levels', 'divisions',],
+    });
+
     if (!employee) {
       throw new NotFoundException('الموظف غير موجود');
     }

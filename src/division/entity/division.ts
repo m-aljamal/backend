@@ -34,7 +34,7 @@ export class Division {
   @Field(() => [Student], { nullable: true })
   students: Student[];
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Column({ nullable: true })
   levelId: string;
 
