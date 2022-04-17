@@ -9,6 +9,9 @@ export class CreateStudent {
   lastName: string;
 
   @Field()
+  fatherName: string;
+
+  @Field()
   phone: string;
 
   @Field()
@@ -16,4 +19,7 @@ export class CreateStudent {
 
   @Field()
   levelId: string;
+
+  @Field()
+  projectId: string;
 }

@@ -18,7 +18,7 @@ export class ProjectService {
 
   findAll(projectArgs: ProjectArgs) {
     return this.projectRepo.find({
-      relations: ['employees'],
+      relations: ['employees', 'students'],
       order: { createdAt: projectArgs.sortBy },
     });
   }

@@ -1,3 +1,4 @@
+import { Student } from 'src/student/entity/student';
 import { Employee } from './../../employee/entity/employee';
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
@@ -44,4 +45,8 @@ export class Project {
   @OneToMany(() => Level, (level) => level.project)
   @Field(() => [Level], { nullable: true })
   levels: Level[];
+
+  @OneToMany(() => Student, (student) => student.project)
+  @Field(() => [Student], { nullable: true })
+  students: Student[];
 }

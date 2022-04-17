@@ -1,3 +1,4 @@
+import { Project } from './../../project/entity/project';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Division } from 'src/division/entity/division';
 import { Level } from 'src/level/entity/level';
@@ -16,6 +17,10 @@ export class Student {
 
   @Field()
   @Column()
+  fatherName: string;
+
+  @Field()
+  @Column()
   lastName: string;
 
   @Field()
@@ -29,4 +34,20 @@ export class Student {
   @ManyToOne(() => Division, (division) => division.students)
   @Field(() => Division)
   division: Division;
+
+  @ManyToOne(() => Project, (project) => project.students)
+  @Field(() => Project)
+  project: Project;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  projectId: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  levelId: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  divisionId: string;
 }
