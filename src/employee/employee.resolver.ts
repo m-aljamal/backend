@@ -67,6 +67,11 @@ export class EmployeeResolver {
     return await this.employeeService.findEmployeesByRole(projectId);
   }
 
+  @Query(() => Employee, { name: 'findEmployee' })
+  async findEmployee(@Args('id') id: string) {
+    return await this.employeeService.findEmployee(id);
+  }
+
   @Mutation(() => Employee)
   async createEmployee(
     @Args('employee') employee: EmployeeDto,

@@ -162,13 +162,20 @@ export class EmployeeService {
   async getEmployeeById(id: string): Promise<Employee> {
     const employee = await this.EmpRepo.findOne({
       where: { id },
-      relations: ['project', 'levels', 'divisions',],
+      relations: ['project', 'levels', 'divisions'],
     });
 
     if (!employee) {
       throw new NotFoundException('الموظف غير موجود');
     }
     return employee;
+  }
+
+  async findEmployee(id: string) {
+    return await this.EmpRepo.findOne({
+      where: { id },
+      relations: ['project', 'levels', 'divisions'],
+    });
   }
 
   private async loadLevels(id: string, projectId: string) {
