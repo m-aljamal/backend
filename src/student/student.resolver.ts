@@ -1,3 +1,4 @@
+import { DivisionService } from './../division/division.service';
 import { Level } from './../level/entity/level';
 import { ProjectService } from 'src/project/project.service';
 import { Project } from 'src/project/entity/project';
@@ -13,6 +14,7 @@ import {
 } from '@nestjs/graphql';
 import { Student } from './entity/student';
 import { LevelService } from 'src/level/level.service';
+import { Division } from 'src/division/entity/division';
 
 @Resolver(() => Student)
 export class StudentResolver {
@@ -20,6 +22,7 @@ export class StudentResolver {
     private readonly studentService: StudentService,
     private readonly projectService: ProjectService,
     private readonly levleService: LevelService,
+    private readonly divisionService: DivisionService,
   ) {}
 
   @Query(() => [Student], { name: 'findAllStudents' })
@@ -42,5 +45,9 @@ export class StudentResolver {
   @ResolveField(() => Student)
   async level(@Parent() student: Student): Promise<Level> {
     return await this.levleService.findOne(student.levelId);
+  }
+  @ResolveField(() => Student)
+  async division(@Parent() student: Student): Promise<Division> {
+    return await this.divisionService.findOne(student.divisionId);
   }
 }

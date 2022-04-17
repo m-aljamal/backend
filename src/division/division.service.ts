@@ -35,8 +35,17 @@ export class DivisionService {
   }
   async findDivisionBySchoolId(id: string) {
     return this.divisionRepo.findOne({
-      where: {id,  },
+      where: { id },
       relations: ['students'],
     });
+  }
+
+  async findOne(id: string) {
+    const d = await this.divisionRepo.findOne({
+      where: { id },
+      relations: ['students'],
+    });
+
+    return d;
   }
 }
