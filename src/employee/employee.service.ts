@@ -143,6 +143,7 @@ export class EmployeeService {
           projectId,
           role: Role.TEACHER,
         },
+        relations: ['levels', 'divisions'],
       }),
       this.EmpRepo.find({
         where: {
