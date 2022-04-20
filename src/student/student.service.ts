@@ -39,4 +39,10 @@ export class StudentService {
   async findAllStudents(): Promise<Student[]> {
     return await this.studentRepo.find();
   }
+
+  async findStudentsByProject(projectId: string): Promise<Student[]> {
+    return await this.studentRepo.find({
+      where: { projectId },
+    });
+  }
 }

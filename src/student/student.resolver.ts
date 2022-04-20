@@ -30,6 +30,13 @@ export class StudentResolver {
     return await this.studentService.findAllStudents();
   }
 
+  @Query(() => [Student], { name: 'findStudentsByProject' })
+  async findStudentsByProject(
+    @Args('projectId') projectId: string,
+  ): Promise<Student[]> {
+    return await this.studentService.findStudentsByProject(projectId);
+  }
+
   @Mutation(() => Student)
   async createStudent(
     @Args('student') student: CreateStudent,
