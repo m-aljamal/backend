@@ -15,6 +15,7 @@ import {
 import { Student } from './entity/student';
 import { LevelService } from 'src/level/level.service';
 import { Division } from 'src/division/entity/division';
+import { studentArgs } from './dto/student.args';
 
 @Resolver(() => Student)
 export class StudentResolver {
@@ -31,10 +32,8 @@ export class StudentResolver {
   }
 
   @Query(() => [Student], { name: 'findStudentsByProject' })
-  async findStudentsByProject(
-    @Args('projectId') projectId: string,
-  ): Promise<Student[]> {
-    return await this.studentService.findStudentsByProject(projectId);
+  async findStudentsByProject(@Args() args: studentArgs): Promise<Student[]> {
+    return await this.studentService.findStudentsByProject(args);
   }
 
   @Mutation(() => Student)
