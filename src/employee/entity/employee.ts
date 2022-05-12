@@ -1,4 +1,5 @@
-import {   JobTitle } from './../../utils/types';
+import { Absent } from './../../absent/entity/absent';
+import { JobTitle } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Project } from 'src/project/entity/project';
@@ -98,6 +99,10 @@ export class Employee {
   @Column({ nullable: true })
   @Field({ nullable: true })
   avatar: string;
+
+  @OneToMany(() => Absent, (absent) => absent.employee, { cascade: true })
+  @Field(() => [Absent], { nullable: true })
+  absents: Absent[];
 }
 
 // @ObjectType()

@@ -9,6 +9,7 @@ import { CurrentMonthDiscountModule } from './current-month-discount/current-mon
 import { StudentModule } from './student/student.module';
 import { LevelModule } from './level/level.module';
 import { DivisionModule } from './division/division.module';
+import { AbsentModule } from './absent/absent.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { DivisionModule } from './division/division.module';
     StudentModule,
     LevelModule,
     DivisionModule,
+    AbsentModule,
   ],
 })
 export class AppModule {}

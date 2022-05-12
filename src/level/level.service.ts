@@ -40,4 +40,13 @@ export class LevelService {
       relations: ['students', 'divisions'],
     });
   }
+
+  async findStudentsByLevel(levelArgs: LevelArgs) {
+    return await this.levelRepo.find({
+      where: {
+        projectId: levelArgs.projectId,
+      },
+      relations: ['students', 'divisions'],
+    });
+  }
 }

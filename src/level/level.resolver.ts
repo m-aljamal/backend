@@ -30,6 +30,11 @@ export class LevelResolver {
     return this.levelService.findAllLevels(levelArgs);
   }
 
+  @Query(() => [Level], { name: 'findStudentsByLevel' })
+  async findStudentsByLevel(@Args() levelArgs: LevelArgs): Promise<Level[]> {
+    return this.levelService.findStudentsByLevel(levelArgs);
+  }
+
   @ResolveField(() => Level)
   async project(@Parent() level: Level): Promise<Project> {
     return await this.projectService.findOne(level.projectId);
