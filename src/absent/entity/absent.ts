@@ -16,9 +16,13 @@ export class Absent {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  notes: string;
+  note: string;
 
   @ManyToOne(() => Employee, (employee) => employee.absents)
   @Field(() => Employee)
   employee: Employee;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  employeeId: string;
 }
