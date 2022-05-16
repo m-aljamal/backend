@@ -120,7 +120,7 @@ export class EmployeeService {
         projectId: projectEmployees.projectId,
         role: Not(Role.ADMIN),
       },
-      relations: ['project', 'currentMonthDiscounts'],
+      relations: ['project', 'currentMonthDiscounts', 'absents'],
       order: { createdAt: projectEmployees.sortBy },
     });
   }

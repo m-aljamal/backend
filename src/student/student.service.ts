@@ -41,6 +41,13 @@ export class StudentService {
     return await this.studentRepo.find();
   }
 
+  async findStudentById(id: string): Promise<Student> {
+    return await this.studentRepo.findOne({
+      where: { id },
+      relations: ['division', 'level', 'project', 'absents'],
+    });
+  }
+
   async findStudentsByProject(args: studentArgs): Promise<Student[]> {
     const query = this.studentRepo.createQueryBuilder('student');
     query.leftJoinAndSelect('student.division', 'division');

@@ -25,8 +25,8 @@ export class Absent {
   @Column({ nullable: true })
   note: string;
 
-  @ManyToOne(() => Employee, (employee) => employee.absents)
-  @Field(() => Employee)
+  @ManyToOne(() => Employee, (employee) => employee.absents, { nullable: true })
+  @Field(() => Employee, { nullable: true })
   employee: Employee;
 
   @Field(() => String, { nullable: true })
@@ -37,16 +37,16 @@ export class Absent {
   @Column({ default: false })
   approved: boolean;
 
-  @ManyToOne(() => Student, (student) => student.absents)
-  @Field(() => Student)
+  @ManyToOne(() => Student, (student) => student.absents, { nullable: true })
+  @Field(() => Student, { nullable: true })
   student: Student;
 
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   studentId: string;
 
-  @ManyToOne(() => Project, (project) => project.absents)
-  @Field(() => Project)
+  @ManyToOne(() => Project, (project) => project.absents, { nullable: true })
+  @Field(() => Project, { nullable: true })
   project: Project;
 
   @Field(() => String)

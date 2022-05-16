@@ -11,7 +11,6 @@ export class AbsentService {
   constructor(
     @InjectRepository(Absent)
     private readonly absentRepo: Repository<Absent>,
-    private readonly employeeService: EmployeeService,
   ) {}
 
   async createAbsent(absent: CreateAbsent): Promise<Absent> {
