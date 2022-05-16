@@ -2,7 +2,14 @@ import { Project } from './../../project/entity/project';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Division } from 'src/division/entity/division';
 import { Level } from 'src/level/entity/level';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Absent } from 'src/absent/entity/absent';
 
 @ObjectType()
 @Entity()
@@ -50,4 +57,8 @@ export class Student {
   @Column({ nullable: true })
   @Field({ nullable: true })
   divisionId: string;
+
+  @OneToMany(() => Absent, (absent) => absent.student)
+  @Field(() => [Absent])
+  absents: Absent[];
 }

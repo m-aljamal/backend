@@ -104,29 +104,3 @@ export class Employee {
   @Field(() => [Absent], { nullable: true })
   absents: Absent[];
 }
-
-// @ObjectType()
-// class Level {
-//   @Field((type) => Number, { nullable: true })
-//   @Column({ nullable: true })
-//   levelNumber: Number;
-
-//   @Field(() => Levels, { nullable: true })
-//   @Column({ nullable: true })
-//   levelString: Levels;
-
-//   @Column('json', { nullable: true })
-//   @Field(() => [Division], { nullable: true })
-//   divisions: Division[];
-// }
-
-// @ObjectType()
-// class Division {
-//   @Field((type) => Number, { nullable: true })
-//   @Column({ nullable: true })
-//   divisionNumber: Number;
-
-//   @Field(() => Divisions, { nullable: true })
-//   @Column({ nullable: true })
-//   divisionString: Divisions;
-// }

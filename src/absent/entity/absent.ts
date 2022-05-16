@@ -1,7 +1,14 @@
+import { Student } from './../../student/entity/student';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entity/employee';
-
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Project } from 'src/project/entity/project';
 
 @ObjectType()
 @Entity()
@@ -25,4 +32,24 @@ export class Absent {
   @Field(() => String, { nullable: true })
   @Column({ nullable: true })
   employeeId: string;
+
+  @Field(() => Boolean)
+  @Column({ default: false })
+  approved: boolean;
+
+  @ManyToOne(() => Student, (student) => student.absents)
+  @Field(() => Student)
+  student: Student;
+
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  studentId: string;
+
+  @ManyToOne(() => Project, (project) => project.absents)
+  @Field(() => Project)
+  project: Project;
+
+  @Field(() => String)
+  @Column()
+  projectId: string;
 }
