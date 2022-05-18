@@ -20,15 +20,11 @@ export class Student {
 
   @Field()
   @Column()
-  firstName: string;
+  name: string;
 
   @Field()
   @Column()
   fatherName: string;
-
-  @Field()
-  @Column()
-  lastName: string;
 
   @Field()
   @Column()

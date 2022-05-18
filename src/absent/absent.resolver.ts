@@ -13,6 +13,7 @@ import { AbsentService } from './absent.service';
 import { CreateAbsent } from './dto/createAbsent';
 import { EmployeeService } from 'src/employee/employee.service';
 import { StudentService } from 'src/student/student.service';
+import { AbsentArgs } from './dto/absent.args';
 
 @Resolver(() => Absent)
 export class AbsentResolver {
@@ -28,8 +29,13 @@ export class AbsentResolver {
   }
 
   @Query(() => [Absent], { name: 'findAbsents' })
-  async findAbsents() {
-    return await this.absentService.findAbsents();
+  async findAbsents(@Args() args: AbsentArgs): Promise<Absent[]> {
+    return await this.absentService.findAbsents(args);
+  }
+
+  @Query(() => [Absent], { name: 'findAbsentsByDate' })
+  async findAbsentsByDate(@Args('date') date: Date) {
+    return this.absentService.findAbsentsByDate(date);
   }
 
   @ResolveField(() => Absent)

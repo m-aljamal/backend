@@ -13,11 +13,7 @@ export class StudentService {
   ) {}
 
   async createStudent(student: CreateStudent): Promise<Student> {
-    let newStudent = await this.findStudent(
-      student.firstName,
-      student.lastName,
-      student.fatherName,
-    );
+    let newStudent = await this.findStudent(student.name, student.fatherName);
     if (newStudent) {
       throw new NotFoundException('الطالب موجود مسبقا');
     }
@@ -25,14 +21,9 @@ export class StudentService {
     return await this.studentRepo.save(student);
   }
 
-  async findStudent(
-    firstName: string,
-    lastName: string,
-    fatherName: string,
-  ): Promise<Student> {
+  async findStudent(name: string, fatherName: string): Promise<Student> {
     return await this.studentRepo.findOne({
-      firstName,
-      lastName,
+      name,
       fatherName,
     });
   }
