@@ -38,7 +38,32 @@ export class AbsentService {
       query.andWhere('employee.name = :name', { name: args.employeeName });
     }
 
+    if (args.fromDate && args.toDate) {
+      query.andWhere('absent.date BETWEEN :fromDate AND :toDate', {
+        fromDate: args.fromDate,
+        toDate: args.toDate,
+      });
+    }
+
     return await query.getMany();
+  }
+
+  async findNumberofAbsentEachEmployee(args: AbsentArgs) {
+    const query = this.absentRepo.createQueryBuilder('absent');
+    query.select('employee.id', 'employeeId');
+    query.addSelect('employee.name', 'name');
+    query.addSelect('COUNT(*)', 'count');
+    query.leftJoin('absent.employee', 'employee');
+    query.groupBy('employee.id');
+    if (args.fromDate && args.toDate) {
+      query.andWhere('absent.date BETWEEN :fromDate AND :toDate', {
+        fromDate: args.fromDate,
+        toDate: args.toDate,
+      });
+    }
+
+    const t = await query.getRawMany();
+    console.log(t);
   }
 
   async findAbsentsByDate(date: Date) {

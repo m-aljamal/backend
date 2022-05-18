@@ -13,4 +13,10 @@ export class AbsentArgs {
 
   @Field({ nullable: true })
   employeeName: string;
+
+  @Field({ nullable: true })
+  fromDate: Date;
+
+  @Field({ nullable: true })
+  toDate: Date;
 }

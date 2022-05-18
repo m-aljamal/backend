@@ -38,6 +38,11 @@ export class AbsentResolver {
     return this.absentService.findAbsentsByDate(date);
   }
 
+  @Query(() => [Absent], { name: 'findNumberofAbsentEachEmployee' })
+  async findNumberofAbsentEachEmployee(@Args() args: AbsentArgs) {
+    return await this.absentService.findNumberofAbsentEachEmployee(args);
+  }
+
   @ResolveField(() => Absent)
   async employee(@Parent() absent: Absent): Promise<Employee> {
     return await this.employeeService.findEmployee(absent.employeeId);
