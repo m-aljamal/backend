@@ -48,22 +48,12 @@ export class AbsentService {
     return await query.getMany();
   }
 
-  async findNumberofAbsentEachEmployee(args: AbsentArgs) {
-    const query = this.absentRepo.createQueryBuilder('absent');
-    query.select('employee.id', 'employeeId');
-    query.addSelect('employee.name', 'name');
-    query.addSelect('COUNT(*)', 'count');
-    query.leftJoin('absent.employee', 'employee');
-    query.groupBy('employee.id');
-    if (args.fromDate && args.toDate) {
-      query.andWhere('absent.date BETWEEN :fromDate AND :toDate', {
-        fromDate: args.fromDate,
-        toDate: args.toDate,
-      });
-    }
+  async findEmployeeAbsentNumber(args: AbsentArgs) {
+    return await this.findNumberofAbsents(args, 'employee');
+  }
 
-    const t = await query.getRawMany();
-    console.log(t);
+  async findStudentsAbsentNumber(args: AbsentArgs) {
+    return await this.findNumberofAbsents(args, 'student');
   }
 
   async findAbsentsByDate(date: Date) {
@@ -73,5 +63,21 @@ export class AbsentService {
       },
     });
     return absents;
+  }
+
+  async findNumberofAbsents(args: AbsentArgs, type: string) {
+    const query = this.absentRepo.createQueryBuilder('absent');
+    query.select(`${type}.id`, 'id');
+    query.addSelect(`${type}.name`, 'name');
+    query.addSelect('COUNT(*)', 'count');
+    query.innerJoin(`absent.${type}`, type);
+    query.groupBy(`${type}.id`);
+    if (args.fromDate && args.toDate) {
+      query.andWhere('absent.date BETWEEN :fromDate AND :toDate', {
+        fromDate: args.fromDate,
+        toDate: args.toDate,
+      });
+    }
+    return await query.getRawMany();
   }
 }

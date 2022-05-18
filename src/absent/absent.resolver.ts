@@ -14,6 +14,7 @@ import { CreateAbsent } from './dto/createAbsent';
 import { EmployeeService } from 'src/employee/employee.service';
 import { StudentService } from 'src/student/student.service';
 import { AbsentArgs } from './dto/absent.args';
+import { AbsentNumber } from './entity/AbsentNumber';
 
 @Resolver(() => Absent)
 export class AbsentResolver {
@@ -38,9 +39,14 @@ export class AbsentResolver {
     return this.absentService.findAbsentsByDate(date);
   }
 
-  @Query(() => [Absent], { name: 'findNumberofAbsentEachEmployee' })
-  async findNumberofAbsentEachEmployee(@Args() args: AbsentArgs) {
-    return await this.absentService.findNumberofAbsentEachEmployee(args);
+  @Query(() => [AbsentNumber], { name: 'findEmployeeAbsentNumber' })
+  async findEmployeeAbsentNumber(@Args() args: AbsentArgs) {
+    return await this.absentService.findEmployeeAbsentNumber(args);
+  }
+
+  @Query(() => [AbsentNumber], { name: 'findStudentsAbsentNumber' })
+  async findStudentsAbsentNumber(@Args() args: AbsentArgs) {
+    return await this.absentService.findStudentsAbsentNumber(args);
   }
 
   @ResolveField(() => Absent)
