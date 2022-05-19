@@ -101,7 +101,7 @@ export class Employee {
   @Field({ nullable: true })
   avatar: string;
 
-  @OneToOne((type) => Absent, (absent) => absent.employee)
-  @Field(() => Absent, { nullable: true })
-  absent: Absent;
+  // @OneToOne((type) => Absent, (absent) => absent.employee)
+  // @Field(() => Absent, { nullable: true })
+  // absent: Absent;
 }

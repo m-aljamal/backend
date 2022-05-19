@@ -30,7 +30,7 @@ export class StudentService {
 
   async findAllStudents(): Promise<Student[]> {
     return await this.studentRepo.find({
-      relations: ['division', 'level', 'project', 'absent'],
+      relations: ['division', 'level', 'project', 'absents'],
     });
   }
 

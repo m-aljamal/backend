@@ -1,12 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Student } from 'src/student/entity/student';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -23,8 +17,7 @@ export class Stuabsent {
   @Column({ type: 'timestamp' })
   date: Date;
 
+  @ManyToOne(() => Student, (student) => student.absents)
   @Field(() => Student)
-  @OneToOne(() => Student, (student) => student.absent)
-  @JoinColumn()
   student: Student;
 }

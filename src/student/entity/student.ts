@@ -56,7 +56,7 @@ export class Student {
   @Field({ nullable: true })
   divisionId: string;
 
-  @OneToOne(() => Stuabsent, (absent) => absent.student)
-  @Field(() => Stuabsent, { nullable: true })
-  absent: Stuabsent;
+  @OneToMany(() => Stuabsent, (stuabsent) => stuabsent.student)
+  @Field(() => [Stuabsent])
+  absents: Stuabsent[];
 }
