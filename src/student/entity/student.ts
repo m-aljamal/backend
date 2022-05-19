@@ -7,9 +7,11 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Absent } from 'src/absent/entity/absent';
+import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
 
 @ObjectType()
 @Entity()
@@ -54,7 +56,7 @@ export class Student {
   @Field({ nullable: true })
   divisionId: string;
 
-  @OneToMany(() => Absent, (absent) => absent.student)
-  @Field(() => [Absent])
-  absents: Absent[];
+  @OneToOne(() => Stuabsent, (absent) => absent.student)
+  @Field(() => Stuabsent, { nullable: true })
+  absent: Stuabsent;
 }

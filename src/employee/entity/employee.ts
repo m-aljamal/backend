@@ -11,6 +11,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -100,7 +101,7 @@ export class Employee {
   @Field({ nullable: true })
   avatar: string;
 
-  @OneToMany(() => Absent, (absent) => absent.employee, { cascade: true })
-  @Field(() => [Absent], { nullable: true })
-  absents: Absent[];
+  @OneToOne((type) => Absent, (absent) => absent.employee)
+  @Field(() => Absent, { nullable: true })
+  absent: Absent;
 }

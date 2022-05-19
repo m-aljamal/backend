@@ -29,13 +29,15 @@ export class StudentService {
   }
 
   async findAllStudents(): Promise<Student[]> {
-    return await this.studentRepo.find();
+    return await this.studentRepo.find({
+      relations: ['division', 'level', 'project', 'absent'],
+    });
   }
 
   async findStudentById(id: string): Promise<Student> {
     return await this.studentRepo.findOne({
       where: { id },
-      relations: ['division', 'level', 'project', 'absents'],
+      relations: ['division', 'level', 'project'],
     });
   }
 
