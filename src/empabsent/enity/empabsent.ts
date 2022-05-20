@@ -25,10 +25,6 @@ export class Empabsent {
   @Column({ nullable: true })
   absenceReason: string;
 
-  @ManyToOne(() => Project, (project) => project.absents)
-  @Field(() => Project)
-  project: Project;
-
   @Field(() => String)
   @Column()
   projectId: string;

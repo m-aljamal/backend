@@ -10,8 +10,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Absent } from 'src/absent/entity/absent';
-import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
+ import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
 
 @ObjectType()
 @Entity()

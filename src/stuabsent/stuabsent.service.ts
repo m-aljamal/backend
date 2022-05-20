@@ -48,15 +48,27 @@ export class StuabsentService {
     query.addSelect('COUNT(*)', 'count');
     query.addSelect('stuabsent.approved', 'approved');
     query.innerJoin(`stuabsent.student`, 'student');
+    query.leftJoin(`student.level`, 'level');
+    query.addSelect('level.levelName', 'levelName');
     query.groupBy(`student.id`);
     query.addGroupBy('stuabsent.approved');
+    query.addGroupBy('level.levelName');
     if (args.fromDate && args.toDate) {
       query.andWhere('stuabsent.date BETWEEN :fromDate AND :toDate', {
         fromDate: args.fromDate,
         toDate: args.toDate,
       });
     }
+    if (args.name) {
+      query.andWhere('student.name = :name', { name: args.name });
+    }
+
+    if (isBoolean(args.approved)) {
+      query.andWhere('stuabsent.approved = :approved', {
+        approved: args.approved,
+      });
+    }
+
     return await query.getRawMany();
-    
   }
 }

@@ -15,4 +15,7 @@ export class TotalAbsent {
 
   @Field()
   approved: boolean;
+
+  @Field()
+  levelName: string;
 }

@@ -1,4 +1,3 @@
-import { Absent } from './../../absent/entity/absent';
 import { JobTitle } from './../../utils/types';
 import { CurrentMonthDiscount } from './../../current-month-discount/entity/current-month-discount';
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';

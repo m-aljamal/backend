@@ -30,10 +30,6 @@ export class Stuabsent {
   @Column({ default: false })
   approved: boolean;
 
-  @ManyToOne(() => Project, (project) => project.absents)
-  @Field(() => Project)
-  project: Project;
-
   @Field(() => String)
   @Column()
   projectId: string;
