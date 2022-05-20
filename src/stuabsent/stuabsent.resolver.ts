@@ -8,8 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { Student } from 'src/student/entity/student';
 import { StudentService } from 'src/student/student.service';
+import { AbsentArgs } from './dto/absentArgs';
 import { CreateStuabsent } from './dto/stuabsent';
 import { Stuabsent } from './enity/stuabsent';
+import { TotalAbsent } from './enity/totalAbsent';
 import { StuabsentService } from './stuabsent.service';
 
 @Resolver(() => Stuabsent)
@@ -27,8 +29,13 @@ export class StuabsentResolver {
   }
 
   @Query(() => [Stuabsent], { name: 'findAllStuabsent' })
-  async findAllStuabsent(): Promise<Stuabsent[]> {
-    return await this.stuAbsentService.findAllStuabsent();
+  async findAllStuabsent(@Args() args: AbsentArgs): Promise<Stuabsent[]> {
+    return await this.stuAbsentService.findAllStuabsent(args);
+  }
+
+  @Query(() => [TotalAbsent], { name: 'findTotalStuabsent' })
+  async findTotalStuabsent(@Args() args: AbsentArgs) {
+    return await this.stuAbsentService.findTotalStuabsent(args);
   }
 
   @ResolveField(() => Stuabsent)

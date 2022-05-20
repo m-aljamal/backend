@@ -7,4 +7,10 @@ export class CreateStuabsent {
 
   @Field()
   date: Date;
+
+  @Field()
+  projectId: string;
+
+  @Field(() => Boolean, { defaultValue: false })
+  approved: boolean;
 }

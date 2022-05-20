@@ -54,5 +54,4 @@ export class Project {
   @OneToMany(() => Absent, (absent) => absent.project)
   @Field(() => [Absent], { nullable: true })
   absents: Absent[];
-
 }
