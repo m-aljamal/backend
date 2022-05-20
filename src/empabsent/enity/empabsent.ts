@@ -28,4 +28,13 @@ export class Empabsent {
   @Field(() => String)
   @Column()
   projectId: string;
+
+  @Field(() => String)
+  @Column()
+  employeeId: string;
+
+  // @ManyToOne(() => Project, (project) => project.absents)
+  // @Field(() => Project)
+  // project: Project;
+  
 }
