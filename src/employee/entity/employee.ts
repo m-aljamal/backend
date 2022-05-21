@@ -17,6 +17,7 @@ import {
 import { Role } from 'src/utils/types';
 import { Level } from 'src/level/entity/level';
 import { Division } from 'src/division/entity/division';
+import { Empabsent } from 'src/empabsent/enity/empabsent';
 
 @ObjectType('Employee')
 @Entity()
@@ -99,4 +100,8 @@ export class Employee {
   @Column({ nullable: true })
   @Field({ nullable: true })
   avatar: string;
+
+  @OneToMany(() => Empabsent, (empabsent) => empabsent.employee)
+  @Field(() => [Empabsent])
+  absents: Empabsent[];
 }

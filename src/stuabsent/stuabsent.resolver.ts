@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { Student } from 'src/student/entity/student';
 import { StudentService } from 'src/student/student.service';
-import { AbsentArgs } from './dto/absentArgs';
+import { AbsentArgs } from '../shared/absentArgs';
 import { CreateStuabsent } from './dto/stuabsent';
 import { Stuabsent } from './enity/stuabsent';
 import { TotalAbsent } from './enity/totalAbsent';

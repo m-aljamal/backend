@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { Stuabsent } from './enity/stuabsent';
 import { isBoolean } from 'class-validator';
-import { AbsentArgs } from './dto/absentArgs';
-
+import { AbsentArgs } from '../shared/absentArgs';
+import { filterByDate } from 'src/shared/filtersAbsentFunctions';
 @Injectable()
 export class StuabsentService {
   constructor(
@@ -53,12 +53,7 @@ export class StuabsentService {
     query.groupBy(`student.id`);
     query.addGroupBy('stuabsent.approved');
     query.addGroupBy('level.levelName');
-    if (args.fromDate && args.toDate) {
-      query.andWhere('stuabsent.date BETWEEN :fromDate AND :toDate', {
-        fromDate: args.fromDate,
-        toDate: args.toDate,
-      });
-    }
+    filterByDate(args.fromDate, args.toDate, 'stuabsent', query);
     if (args.name) {
       query.andWhere('student.name = :name', { name: args.name });
     }

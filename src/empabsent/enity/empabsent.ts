@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Project } from 'src/project/entity/project';
+import { Employee } from 'src/employee/entity/employee';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
@@ -27,14 +27,9 @@ export class Empabsent {
 
   @Field(() => String)
   @Column()
-  projectId: string;
-
-  @Field(() => String)
-  @Column()
   employeeId: string;
 
-  // @ManyToOne(() => Project, (project) => project.absents)
-  // @Field(() => Project)
-  // project: Project;
-  
+  @ManyToOne(() => Employee, (employee) => employee.absents)
+  @Field(() => Employee)
+  employee: Employee;
 }

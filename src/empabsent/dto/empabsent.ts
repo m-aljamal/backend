@@ -13,7 +13,4 @@ export class CreateEmpabsent {
 
   @Field(() => String)
   employeeId: string;
-
-  @Field(() => String)
-  projectId: string;
 }
