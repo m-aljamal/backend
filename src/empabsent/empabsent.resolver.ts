@@ -12,7 +12,7 @@ import { Empabsent } from './enity/empabsent';
 import { EmployeeService } from 'src/employee/employee.service';
 import { AbsentArgs } from 'src/shared/absentArgs';
 import { Employee } from 'src/employee/entity/employee';
-import { TotalAbsent } from 'src/stuabsent/enity/totalAbsent';
+import { TotalAbsent } from 'src/shared/totalAbsent';
 
 @Resolver(() => Empabsent)
 export class EmpabsentResolver {

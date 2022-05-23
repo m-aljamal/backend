@@ -11,7 +11,7 @@ import { StudentService } from 'src/student/student.service';
 import { AbsentArgs } from '../shared/absentArgs';
 import { CreateStuabsent } from './dto/stuabsent';
 import { Stuabsent } from './enity/stuabsent';
-import { TotalAbsent } from './enity/totalAbsent';
+import { TotalAbsent } from '../shared/totalAbsent';
 import { StuabsentService } from './stuabsent.service';
 
 @Resolver(() => Stuabsent)
