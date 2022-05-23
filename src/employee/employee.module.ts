@@ -1,3 +1,4 @@
+import { StudyYearModule } from './../study-year/study-year.module';
 import { DivisionModule } from './../division/division.module';
 import { ProjectModule } from './../project/project.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { LevelModule } from 'src/level/level.module';
     ProjectModule,
     LevelModule,
     DivisionModule,
+    StudyYearModule,
   ],
   providers: [EmployeeResolver, EmployeeService],
   exports: [EmployeeService],

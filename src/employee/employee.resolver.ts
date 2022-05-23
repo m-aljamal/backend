@@ -21,6 +21,7 @@ import { EmployeeArgs } from './dto/findEmployee.args';
 import { Role } from 'src/utils/types';
 import { ProjectService } from 'src/project/project.service';
 import { EmployeesByRole } from './entity/EmployeeByType';
+import { UpdateEmployeeInput } from './dto/update.employee';
 
 @Resolver(() => Employee)
 export class EmployeeResolver {
@@ -77,6 +78,14 @@ export class EmployeeResolver {
     @Args('employee') employee: EmployeeDto,
   ): Promise<Employee> {
     return await this.employeeService.createEmployee(employee);
+  }
+
+  @Mutation(() => Employee, { name: 'updateEmployee' })
+  async updateEmployee(
+    @Args('id') id: string,
+    @Args('updateEmployeeInput') updateEmployeeInput: UpdateEmployeeInput,
+  ) {
+    return await this.employeeService.updateEmployee(id, updateEmployeeInput);
   }
 
   @ResolveField(() => Employee)

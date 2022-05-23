@@ -18,6 +18,7 @@ import { Role } from 'src/utils/types';
 import { Level } from 'src/level/entity/level';
 import { Division } from 'src/division/entity/division';
 import { Empabsent } from 'src/empabsent/enity/empabsent';
+import { StudyYear } from 'src/study-year/entity/study-year';
 
 @ObjectType('Employee')
 @Entity()
@@ -104,4 +105,15 @@ export class Employee {
   @OneToMany(() => Empabsent, (empabsent) => empabsent.employee)
   @Field(() => [Empabsent])
   absents: Empabsent[];
+
+  @ManyToMany(() => StudyYear, (studyYear) => studyYear.employees, {
+    cascade: true,
+  })
+  @Field(() => [StudyYear], { nullable: true })
+  @JoinTable({
+    name: 'employee_study_year',
+    joinColumn: { name: 'employee_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'study_year_id', referencedColumnName: 'id' },
+  })
+  studyYears: StudyYear[];
 }

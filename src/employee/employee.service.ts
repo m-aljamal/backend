@@ -15,6 +15,8 @@ import { Not, Repository } from 'typeorm';
 import { Role, JobTitle } from 'src/utils/types';
 import { EmployeesByRole } from './entity/EmployeeByType';
 import { LevelService } from 'src/level/level.service';
+import { StudyYearService } from 'src/study-year/study-year.service';
+import { UpdateEmployeeInput } from './dto/update.employee';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -22,6 +24,7 @@ export class EmployeeService {
     private readonly EmpRepo: Repository<Employee>,
     private readonly levelService: LevelService,
     private readonly divisionService: DivisionService,
+    private readonly studyYearService: StudyYearService,
   ) {}
 
   async findAllEmployees(args: EmployeeArgs): Promise<Employee[]> {
@@ -35,6 +38,7 @@ export class EmployeeService {
 
     query.leftJoinAndSelect('employee.levels', 'levels');
     query.leftJoinAndSelect('employee.divisions', 'divisions');
+    query.leftJoinAndSelect('employee.studyYears', 'studyYears');
 
     return await query.getMany();
   }
@@ -70,8 +74,19 @@ export class EmployeeService {
         }),
       );
     }
+    const studyYears = await Promise.all(
+      employee.studyYears.map(async (id) => {
+        const studyYear = await this.loadStudyYears(id);
+        if (!studyYear) {
+          throw new BadRequestException('السنة الدراسية غير موجودة');
+        }
+        return studyYear;
+      }),
+    );
+
     newEmployee = this.EmpRepo.create({
       ...employee,
+      studyYears,
       password: hashPassword(employee.password),
       levels,
       divisions,
@@ -175,8 +190,18 @@ export class EmployeeService {
   async findEmployee(id: string) {
     return await this.EmpRepo.findOne({
       where: { id },
-      relations: ['project', 'levels', 'divisions'],
+      relations: ['project', 'levels', 'divisions', 'studyYears'],
     });
+  }
+
+  async updateEmployee(id: string, updateEmployeeInput: UpdateEmployeeInput) {
+    const employee = await this.findEmployee(id);
+    if (!employee) {
+      throw new NotFoundException('الموظف غير موجود');
+    }
+
+    Object.assign(employee, updateEmployeeInput);
+    return await this.EmpRepo.save(employee);
   }
 
   private async loadLevels(id: string, projectId: string) {
@@ -185,5 +210,9 @@ export class EmployeeService {
 
   private async loadDivisions(id: string) {
     return await this.divisionService.findDivisionBySchoolId(id);
+  }
+
+  private async loadStudyYears(id: string) {
+    return await this.studyYearService.findOne(id);
   }
 }

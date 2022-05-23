@@ -11,6 +11,7 @@ import { LevelModule } from './level/level.module';
 import { DivisionModule } from './division/division.module';
 import { StuabsentModule } from './stuabsent/stuabsent.module';
 import { EmpabsentModule } from './empabsent/empabsent.module';
+import { StudyYearModule } from './study-year/study-year.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { EmpabsentModule } from './empabsent/empabsent.module';
     DivisionModule,
     StuabsentModule,
     EmpabsentModule,
+    StudyYearModule,
   ],
 })
 export class AppModule {}

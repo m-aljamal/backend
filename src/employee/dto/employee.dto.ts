@@ -33,6 +33,9 @@ export class EmployeeDto {
   @Field(() => [String], { nullable: true })
   divisions: string[];
 
+  @Field(() => [String], { nullable: true })
+  studyYears: string[];
+
   @Field({ nullable: true })
   avatar: string;
 }
