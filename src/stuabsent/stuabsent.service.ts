@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm/repository/Repository';
 import { Stuabsent } from './enity/stuabsent';
-import { isBoolean } from 'class-validator';
 import { AbsentArgs } from '../shared/absentArgs';
 import {
   filterByApproved,
@@ -23,29 +22,13 @@ export class StuabsentService {
   }
   async findAllStuabsent(args: AbsentArgs): Promise<Stuabsent[]> {
     const query = this.stuAbsentRepo.createQueryBuilder('stuabsent');
-    // if (args.date) {
-    //   query.andWhere('stuabsent.date = :date', { date: args.date });
-    // }
+
     filterByExactDate(args.date, 'stuabsent', query);
-    // if (isBoolean(args.approved)) {
-    //   query.andWhere('stuabsent.approved = :approved', {
-    //     approved: args.approved,
-    //   });
-    // }
+
     filterByApproved(args.approved, 'stuabsent', query);
 
-    if (args.name) {
-      query.leftJoinAndSelect('stuabsent.student', 'student');
-      query.andWhere('student.name = :name', { name: args.name });
-    }
-    // filterByName(args.name, 'stuabsent', query, 'student');
+    filterByName(args.name, 'stuabsent', query, 'student');
 
-    // if (args.fromDate && args.toDate) {
-    //   query.andWhere('stuabsent.date BETWEEN :fromDate AND :toDate', {
-    //     fromDate: args.fromDate,
-    //     toDate: args.toDate,
-    //   });
-    // }
     filterByDate(args.fromDate, args.toDate, 'stuabsent', query);
 
     return await query.getMany();
@@ -64,7 +47,7 @@ export class StuabsentService {
     query.addGroupBy('stuabsent.approved');
     query.addGroupBy('level.levelName');
     filterByDate(args.fromDate, args.toDate, 'stuabsent', query);
-    filterByName(args.name, 'student', query, 'student');
+    filterByName(args.name, 'stuabsent', query, 'student');
     filterByApproved(args.approved, 'stuabsent', query);
     return await query.getRawMany();
   }

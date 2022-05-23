@@ -19,10 +19,13 @@ export function filterByName(
   sqlTable: string,
   query: SelectQueryBuilder<any>,
   type: string,
+  total: boolean = false,
 ) {
   if (name) {
-    query.leftJoinAndSelect(`${sqlTable}.${type}`, type);
-    return query.andWhere(`${sqlTable}.name = :name`, { name });
+    if (total) {
+      query.leftJoinAndSelect(`${sqlTable}.${type}`, type);
+    }
+    return query.andWhere(`${type}.name = :name`, { name });
   }
 }
 

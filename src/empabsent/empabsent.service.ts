@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isBoolean } from 'class-validator';
 import { AbsentArgs } from 'src/shared/absentArgs';
+import {
+  filterByApproved,
+  filterByDate,
+  filterByExactDate,
+  filterByName,
+} from 'src/shared/filtersAbsentFunctions';
 import { Repository } from 'typeorm';
 import { CreateEmpabsent } from './dto/empabsent';
 import { Empabsent } from './enity/empabsent';
@@ -19,26 +24,26 @@ export class EmpabsentService {
 
   async getAllEmpabsent(args: AbsentArgs): Promise<Empabsent[]> {
     const query = this.empabsentRepository.createQueryBuilder('empabsent');
-    if (args.date) {
-      query.andWhere('empabsent.date = :date', { date: args.date });
-    }
-    if (isBoolean(args.approved)) {
-      query.andWhere('empabsent.approved = :approved', {
-        approved: args.approved,
-      });
-    }
-    if (args.name) {
-      query.leftJoinAndSelect('empabsent.employee', 'employee');
-      query.andWhere('employee.name = :name', { name: args.name });
-    }
-
-    if (args.fromDate && args.toDate) {
-      query.andWhere('empabsent.date BETWEEN :fromDate AND :toDate', {
-        fromDate: args.fromDate,
-        toDate: args.toDate,
-      });
-    }
-
+    filterByExactDate(args.date, 'empabsent', query);
+    filterByApproved(args.approved, 'empabsent', query);
+    filterByName(args.name, 'empabsent', query, 'employee', true);
+    filterByDate(args.fromDate, args.toDate, 'empabsent', query);
     return await query.getMany();
+  }
+
+  async getTotalEmpabsent(args: AbsentArgs) {
+    const query = this.empabsentRepository.createQueryBuilder('empabsent');
+    query.select(`employee.id`, 'id');
+    query.addSelect(`employee.name`, 'name');
+    query.addSelect('COUNT(*)', 'count');
+    query.addSelect('empabsent.approved', 'approved');
+    query.innerJoin(`empabsent.employee`, 'employee');
+    query.groupBy(`employee.id`);
+    query.addGroupBy('empabsent.approved');
+    filterByExactDate(args.date, 'empabsent', query);
+    filterByApproved(args.approved, 'empabsent', query);
+    filterByName(args.name, 'empabsent', query, 'employee');
+    filterByDate(args.fromDate, args.toDate, 'empabsent', query);
+    return await query.getRawMany();
   }
 }

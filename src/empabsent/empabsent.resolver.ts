@@ -12,6 +12,7 @@ import { Empabsent } from './enity/empabsent';
 import { EmployeeService } from 'src/employee/employee.service';
 import { AbsentArgs } from 'src/shared/absentArgs';
 import { Employee } from 'src/employee/entity/employee';
+import { TotalAbsent } from 'src/stuabsent/enity/totalAbsent';
 
 @Resolver(() => Empabsent)
 export class EmpabsentResolver {
@@ -32,10 +33,10 @@ export class EmpabsentResolver {
     return await this.empabsentService.getAllEmpabsent(args);
   }
 
-  // @Query(() => [Empabsent], { name: 'findTotalEmpAbsent' })
-  // async getTotalEmpabsent(@Args() args: AbsentArgs): Promise<Empabsent[]> {
-  //   return await this.empabsentService.getTotalEmpabsent(args);
-  // }
+  @Query(() => [TotalAbsent], { name: 'findTotalEmpAbsent' })
+  async getTotalEmpabsent(@Args() args: AbsentArgs) {
+    return await this.empabsentService.getTotalEmpabsent(args);
+  }
 
   @ResolveField(() => Empabsent)
   async employee(@Parent() absent: Empabsent): Promise<Employee> {
