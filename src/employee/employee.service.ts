@@ -17,6 +17,7 @@ import { EmployeesByRole } from './entity/EmployeeByType';
 import { LevelService } from 'src/level/level.service';
 import { StudyYearService } from 'src/study-year/study-year.service';
 import { UpdateEmployeeInput } from './dto/update.employee';
+import e from 'express';
 @Injectable()
 export class EmployeeService {
   constructor(
@@ -195,12 +196,42 @@ export class EmployeeService {
   }
 
   async updateEmployee(id: string, updateEmployeeInput: UpdateEmployeeInput) {
-    const employee = await this.findEmployee(id);
+    let employee = await this.EmpRepo.findOne({
+      where: { id },
+      relations: ['project', 'levels', 'divisions', 'studyYears'],
+    });
+
     if (!employee) {
       throw new NotFoundException('الموظف غير موجود');
     }
+    // const studyYears = await Promise.all(
+    //   updateEmployeeInput.studyYears.map(async (id) => {
+    //     const studyYear = await this.loadStudyYears(id);
+    //     if (!studyYear) {
+    //       throw new BadRequestException('السنة الدراسية غير موجودة');
+    //     }
+    //     return studyYear;
+    //   }),
+    // );
+    // console.log("employee", employee);
+    let newStudyYears = [];
+    if (updateEmployeeInput.studyYears) {
+      newStudyYears = await Promise.all(
+        updateEmployeeInput.studyYears.map(async (id) => {
+          const studyYear = await this.loadStudyYears(id);
+          if (!studyYear) {
+            throw new BadRequestException('السنة الدراسية غير موجودة');
+          }
 
+          return studyYear;
+        }),
+      );
+    }
+    const studyYears = [...employee.studyYears, ...newStudyYears];
+
+    updateEmployeeInput.studyYears = studyYears;
     Object.assign(employee, updateEmployeeInput);
+
     return await this.EmpRepo.save(employee);
   }
 
