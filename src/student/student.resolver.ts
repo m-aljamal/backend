@@ -43,10 +43,10 @@ export class StudentResolver {
     return await this.studentService.createStudent(student);
   }
 
-  @ResolveField(() => Student)
-  async project(@Parent() student: Student): Promise<Project> {
-    return await this.projectService.findOne(student.projectId);
-  }
+  // @ResolveField(() => Student)
+  // async project(@Parent() student: Student): Promise<Project> {
+  //   return await this.projectService.findOne(student.projectId);
+  // }
 
   @ResolveField(() => Student)
   async level(@Parent() student: Student): Promise<Level> {

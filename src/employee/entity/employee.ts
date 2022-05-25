@@ -19,6 +19,7 @@ import { Level } from 'src/level/entity/level';
 import { Division } from 'src/division/entity/division';
 import { Empabsent } from 'src/empabsent/enity/empabsent';
 import { StudyYear } from 'src/study-year/entity/study-year';
+import { Semester } from 'src/semester/entity/semester';
 
 @ObjectType('Employee')
 @Entity()
@@ -43,9 +44,9 @@ export class Employee {
   @Field()
   updatedAt: Date;
 
-  @ManyToOne(() => Project, (project) => project.employees)
-  @Field(() => Project)
-  project: Project;
+  // @ManyToOne(() => Project, (project) => project.employees)
+  // @Field(() => Project)
+  // project: Project;
 
   @OneToMany(
     () => CurrentMonthDiscount,
@@ -54,9 +55,9 @@ export class Employee {
   @Field(() => [CurrentMonthDiscount])
   currentMonthDiscounts: CurrentMonthDiscount[];
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  projectId: string;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // projectId: string;
 
   @Column()
   @Field()
@@ -116,4 +117,15 @@ export class Employee {
     inverseJoinColumn: { name: 'study_year_id', referencedColumnName: 'id' },
   })
   studyYears: StudyYear[];
+
+  @ManyToMany(() => Semester, (semester) => semester.employees, {
+    cascade: true,
+  })
+  @Field(() => [Semester], { nullable: true })
+  @JoinTable({
+    name: 'employee_semester',
+    joinColumn: { name: 'employee_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'semester_id', referencedColumnName: 'id' },
+  })
+  semesters: Semester[];
 }

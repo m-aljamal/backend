@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
 import { StudyYear } from 'src/study-year/entity/study-year';
+import { Semester } from 'src/semester/entity/semester';
 
 @ObjectType()
 @Entity()
@@ -42,13 +43,13 @@ export class Student {
   @Field(() => Division)
   division: Division;
 
-  @ManyToOne(() => Project, (project) => project.students)
-  @Field(() => Project)
-  project: Project;
+  // @ManyToOne(() => Project, (project) => project.students)
+  // @Field(() => Project)
+  // project: Project;
 
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  projectId: string;
+  // @Column({ nullable: true })
+  // @Field({ nullable: true })
+  // projectId: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
@@ -70,4 +71,15 @@ export class Student {
     inverseJoinColumn: { name: 'study_year_id', referencedColumnName: 'id' },
   })
   studyYears: StudyYear[];
+
+  @ManyToMany(() => Semester, (semester) => semester.employees, {
+    cascade: true,
+  })
+  @Field(() => [Semester], { nullable: true })
+  @JoinTable({
+    name: 'student_semester',
+    joinColumn: { name: 'student_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'semester_id', referencedColumnName: 'id' },
+  })
+  semesters: Semester[];
 }

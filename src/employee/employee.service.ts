@@ -57,7 +57,7 @@ export class EmployeeService {
     if (employee.jobTitle === JobTitle.TEACHER) {
       levels = await Promise.all(
         employee.levels.map(async (id) => {
-          const level = await this.loadLevels(id, employee.projectId);
+          const level = await this.loadLevels(id);
           if (!level) {
             throw new BadRequestException('المرحلة غير موجودة');
           }
@@ -132,10 +132,9 @@ export class EmployeeService {
   ): Promise<Employee[]> {
     return await this.EmpRepo.find({
       where: {
-        projectId: projectEmployees.projectId,
         role: Not(Role.ADMIN),
       },
-      relations: ['project', 'currentMonthDiscounts', 'absents'],
+      relations: ['currentMonthDiscounts', 'absents'],
       order: { createdAt: projectEmployees.sortBy },
     });
   }
@@ -230,8 +229,8 @@ export class EmployeeService {
     return await this.EmpRepo.save(employee);
   }
 
-  private async loadLevels(id: string, projectId: string) {
-    return await this.levelService.findLevelByProjectId(id, projectId);
+  private async loadLevels(id: string) {
+    return await this.levelService.findOne(id);
   }
 
   private async loadDivisions(id: string) {

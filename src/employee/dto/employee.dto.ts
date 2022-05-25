@@ -12,8 +12,8 @@ export class EmployeeDto {
   @Field({ nullable: true })
   salary: number;
 
-  @Field({ nullable: true })
-  projectId: string;
+  // @Field({ nullable: true })
+  // projectId: string;
 
   @Field()
   username: string;
@@ -38,4 +38,7 @@ export class EmployeeDto {
 
   @Field({ nullable: true })
   avatar: string;
+
+  @Field(() => [String], { nullable: true })
+  semestersId: string[];
 }

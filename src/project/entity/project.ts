@@ -1,3 +1,4 @@
+import { Archive } from './../../archive/entity/archive';
 import { Student } from 'src/student/entity/student';
 import { Employee } from './../../employee/entity/employee';
 import { Field, ObjectType } from '@nestjs/graphql';
@@ -39,19 +40,23 @@ export class Project {
   @Field()
   updatedAt: Date;
 
-  @OneToMany(() => Employee, (employee) => employee.project)
-  @Field(() => [Employee], { nullable: true })
-  employees: Employee[];
+  // @OneToMany(() => Employee, (employee) => employee.project)
+  // @Field(() => [Employee], { nullable: true })
+  // employees: Employee[];
 
   @OneToMany(() => Level, (level) => level.project)
   @Field(() => [Level], { nullable: true })
   levels: Level[];
 
-  @OneToMany(() => Student, (student) => student.project)
-  @Field(() => [Student], { nullable: true })
-  students: Student[];
+  // @OneToMany(() => Student, (student) => student.project)
+  // @Field(() => [Student], { nullable: true })
+  // students: Student[];
 
   @OneToMany(() => StudyYear, (studyYear) => studyYear.project)
   @Field(() => [StudyYear], { nullable: true })
   studyYears: StudyYear[];
+
+  @OneToMany(() => Archive, (archive) => archive.project)
+  @Field(() => [Archive], { nullable: true })
+  archives: Archive[];
 }

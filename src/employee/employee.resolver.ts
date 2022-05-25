@@ -88,8 +88,8 @@ export class EmployeeResolver {
     return await this.employeeService.updateEmployee(id, updateEmployeeInput);
   }
 
-  @ResolveField(() => Employee)
-  async project(@Parent() employee: Employee): Promise<Project> {
-    return await this.projectService.findOne(employee.projectId);
-  }
+  // @ResolveField(() => Employee)
+  // async project(@Parent() employee: Employee): Promise<Project> {
+  //   return await this.projectService.findOne(employee.projectId);
+  // }
 }
