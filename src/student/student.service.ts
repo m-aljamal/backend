@@ -4,12 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Student } from './entity/student';
 import { studentArgs } from './dto/student.args';
+import { StudyYearService } from 'src/study-year/study-year.service';
 
 @Injectable()
 export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepo: Repository<Student>,
+    private readonly studyYearService: StudyYearService,
   ) {}
 
   async createStudent(student: CreateStudent): Promise<Student> {
@@ -17,8 +19,20 @@ export class StudentService {
     if (newStudent) {
       throw new NotFoundException('الطالب موجود مسبقا');
     }
-
-    return await this.studentRepo.save(student);
+    const studyYears = await Promise.all(
+      student.studyYears.map(async (id) => {
+        const studyYear = await this.loadStudyYears(id);
+        if (!studyYear) {
+          throw new NotFoundException('العام الدراسي غير موجود');
+        }
+        return studyYear;
+      }),
+    );
+    let createNewStudent = this.studentRepo.create({
+      ...student,
+      studyYears,
+    });
+    return await this.studentRepo.save(createNewStudent);
   }
 
   async findStudent(name: string, fatherName: string): Promise<Student> {
@@ -30,7 +44,7 @@ export class StudentService {
 
   async findAllStudents(): Promise<Student[]> {
     return await this.studentRepo.find({
-      relations: ['division', 'level', 'project', 'absents'],
+      relations: ['division', 'level', 'project', 'absents', 'studyYears'],
     });
   }
 
@@ -66,5 +80,8 @@ export class StudentService {
     });
 
     return await query.getMany();
+  }
+  private async loadStudyYears(id: string) {
+    return await this.studyYearService.findOne(id);
   }
 }

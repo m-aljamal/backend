@@ -17,14 +17,14 @@ export class StudyYearService {
 
   async findAllStudyYears(): Promise<StudyYear[]> {
     return this.studyYearRepo.find({
-      relations: ['employees'],
+      relations: ['employees', 'students'],
     });
   }
 
   async findOne(id: string): Promise<StudyYear> {
     return this.studyYearRepo.findOne({
       where: { id },
-      relations: ['employees'],
+      relations: ['employees', 'students'],
     });
   }
 }

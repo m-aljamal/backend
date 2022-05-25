@@ -19,4 +19,7 @@ export class CreateStudent {
 
   @Field()
   projectId: string;
+
+  @Field(() => [String])
+  studyYears: string[];
 }

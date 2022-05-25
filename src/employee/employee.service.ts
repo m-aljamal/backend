@@ -2,7 +2,6 @@ import { DivisionService } from './../division/division.service';
 import { ProjectEmployeesArgs } from './dto/employee.args';
 import { EmployeeArgs } from './dto/findEmployee.args';
 import { hashPassword } from './../utils/hashPassword';
-
 import { EmployeeDto } from './dto/employee.dto';
 import { Employee } from './entity/employee';
 import {
@@ -17,7 +16,7 @@ import { EmployeesByRole } from './entity/EmployeeByType';
 import { LevelService } from 'src/level/level.service';
 import { StudyYearService } from 'src/study-year/study-year.service';
 import { UpdateEmployeeInput } from './dto/update.employee';
-import e from 'express';
+
 @Injectable()
 export class EmployeeService {
   constructor(

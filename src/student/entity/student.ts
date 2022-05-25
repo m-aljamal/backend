@@ -5,12 +5,15 @@ import { Level } from 'src/level/entity/level';
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
- import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
+import { Stuabsent } from 'src/stuabsent/enity/stuabsent';
+import { StudyYear } from 'src/study-year/entity/study-year';
 
 @ObjectType()
 @Entity()
@@ -58,4 +61,13 @@ export class Student {
   @OneToMany(() => Stuabsent, (stuabsent) => stuabsent.student)
   @Field(() => [Stuabsent])
   absents: Stuabsent[];
+
+  @ManyToMany(() => StudyYear, (studyYear) => studyYear.students)
+  @Field(() => [StudyYear])
+  @JoinTable({
+    name: 'student_study_year',
+    joinColumn: { name: 'student_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'study_year_id', referencedColumnName: 'id' },
+  })
+  studyYears: StudyYear[];
 }

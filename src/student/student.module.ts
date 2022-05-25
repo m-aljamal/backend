@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from './entity/student';
 import { StudentResolver } from './student.resolver';
 import { StudentService } from './student.service';
+import { StudyYearModule } from 'src/study-year/study-year.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { StudentService } from './student.service';
     ProjectModule,
     LevelModule,
     DivisionModule,
+    StudyYearModule
   ],
   providers: [StudentResolver, StudentService],
   exports: [StudentService],
