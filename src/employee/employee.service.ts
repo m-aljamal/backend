@@ -204,16 +204,7 @@ export class EmployeeService {
     if (!employee) {
       throw new NotFoundException('الموظف غير موجود');
     }
-    // const studyYears = await Promise.all(
-    //   updateEmployeeInput.studyYears.map(async (id) => {
-    //     const studyYear = await this.loadStudyYears(id);
-    //     if (!studyYear) {
-    //       throw new BadRequestException('السنة الدراسية غير موجودة');
-    //     }
-    //     return studyYear;
-    //   }),
-    // );
-    // console.log("employee", employee);
+
     let newStudyYears = [];
     if (updateEmployeeInput.studyYears) {
       newStudyYears = await Promise.all(
@@ -227,8 +218,13 @@ export class EmployeeService {
         }),
       );
     }
-    const studyYears = [...employee.studyYears, ...newStudyYears];
 
+    const studyYears = [...employee.studyYears, ...newStudyYears];
+    updateEmployeeInput.password
+      ? (updateEmployeeInput.password = hashPassword(
+          updateEmployeeInput.password,
+        ))
+      : null;
     updateEmployeeInput.studyYears = studyYears;
     Object.assign(employee, updateEmployeeInput);
 
