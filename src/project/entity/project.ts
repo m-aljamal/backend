@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Level } from 'src/level/entity/level';
+import { StudyYear } from 'src/study-year/entity/study-year';
 
 @ObjectType()
 @Entity()
@@ -49,4 +50,8 @@ export class Project {
   @OneToMany(() => Student, (student) => student.project)
   @Field(() => [Student], { nullable: true })
   students: Student[];
+
+  @OneToMany(() => StudyYear, (studyYear) => studyYear.project)
+  @Field(() => [StudyYear], { nullable: true })
+  studyYears: StudyYear[];
 }

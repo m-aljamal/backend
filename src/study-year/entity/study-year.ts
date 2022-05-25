@@ -1,7 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Employee } from 'src/employee/entity/employee';
+import { Project } from 'src/project/entity/project';
 import { Student } from 'src/student/entity/student';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
@@ -45,4 +52,12 @@ export class StudyYear {
   @ManyToMany(() => Student, (student) => student.studyYears)
   @Field(() => [Student], { nullable: true })
   students: Student[];
+
+  @ManyToOne(() => Project, (project) => project.studyYears)
+  @Field(() => Project)
+  project: Project;
+
+  @Column()
+  @Field()
+  projectId: string;
 }

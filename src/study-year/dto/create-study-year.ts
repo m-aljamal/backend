@@ -23,5 +23,6 @@ export class CreateStudyYear {
   @Field()
   summerActivityEnd: Date;
 
-  
+  @Field()
+  projectId: string;
 }
