@@ -40,8 +40,4 @@ export class Semester {
   @ManyToMany(() => Student, (student) => student.semesters)
   @Field(() => [Student], { nullable: true })
   students: Student[];
-
-  @ManyToMany(() => Empabsent, (empabsent) => empabsent.semesters)
-  @Field(() => [Empabsent], { nullable: true })
-  employeeAbsents: Empabsent[];
 }
