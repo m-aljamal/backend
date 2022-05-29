@@ -1,3 +1,4 @@
+import { CreateSemester } from './dto/create-semester';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -9,4 +10,8 @@ export class SemesterService {
     @InjectRepository(Semester)
     private readonly semesterRepo: Repository<Semester>,
   ) {}
+
+  async createSemester(semester: CreateSemester): Promise<Semester> {
+    return this.semesterRepo.save(semester);
+  }
 }

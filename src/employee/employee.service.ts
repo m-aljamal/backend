@@ -16,6 +16,7 @@ import { EmployeesByRole } from './entity/EmployeeByType';
 import { LevelService } from 'src/level/level.service';
 import { StudyYearService } from 'src/study-year/study-year.service';
 import { UpdateEmployeeInput } from './dto/update.employee';
+import { SemesterService } from 'src/semester/semester.service';
 
 @Injectable()
 export class EmployeeService {
@@ -25,6 +26,7 @@ export class EmployeeService {
     private readonly levelService: LevelService,
     private readonly divisionService: DivisionService,
     private readonly studyYearService: StudyYearService,
+    private readonly semesterSerivce: SemesterService,
   ) {}
 
   async findAllEmployees(args: EmployeeArgs): Promise<Employee[]> {
@@ -54,6 +56,7 @@ export class EmployeeService {
     }
     let levels = [];
     let divisions = [];
+
     if (employee.jobTitle === JobTitle.TEACHER) {
       levels = await Promise.all(
         employee.levels.map(async (id) => {
@@ -83,7 +86,7 @@ export class EmployeeService {
         return studyYear;
       }),
     );
-
+    // const semesters =
     newEmployee = this.EmpRepo.create({
       ...employee,
       studyYears,

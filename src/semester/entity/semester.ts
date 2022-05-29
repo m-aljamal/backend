@@ -1,6 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
-import { Empabsent } from 'src/empabsent/enity/empabsent';
 import { Employee } from 'src/employee/entity/employee';
 import { Student } from 'src/student/entity/student';
 import {
@@ -20,11 +19,11 @@ export class Semester {
   @Field()
   name: string;
 
-  @Field()
-  startDate: Date;
+  // @Field()
+  // startDate: Date;
 
-  @Field()
-  endDate: Date;
+  // @Field()
+  // endDate: Date;
 
   @ManyToOne(() => Archive, (archive) => archive.semesters)
   @Field(() => Archive)

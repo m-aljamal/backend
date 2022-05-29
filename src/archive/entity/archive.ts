@@ -28,7 +28,7 @@ export class Archive {
   @Field()
   projectId: string;
 
-  @OneToMany(() => Semester, (semester) => semester.archive)
-  @Field(() => [Semester])
+  @OneToMany(() => Semester, (semester) => semester.archive, { nullable: true })
+  @Field(() => [Semester], { nullable: true })
   semesters: Semester[];
 }

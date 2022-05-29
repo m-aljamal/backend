@@ -28,12 +28,12 @@ import { SemesterModule } from './semester/semester.module';
           type: 'postgres',
           host: config.get('DB_HOST'),
 
-          port: 5432,
-          //  port: config.get('DB_PORT'),
+          //  port: 5432,
+          port: config.get('DB_PORT'),
           username: config.get('DB_USERNAME'),
           password: config.get('DB_PASSWORD'),
-          database: 'postgres',
-          //  database: config.get('DB_NAME'),
+          // database: 'postgres',
+          database: config.get('DB_NAME'),
 
           autoLoadEntities: true,
           synchronize: true,
