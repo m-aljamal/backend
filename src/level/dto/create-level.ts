@@ -8,6 +8,6 @@ export class CreateLevel {
   @Field()
   levelName: string;
 
-  @Field()
-  projectId: string;
+  @Field(() => [String])
+  semesters: string[];
 }

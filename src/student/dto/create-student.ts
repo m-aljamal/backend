@@ -21,8 +21,5 @@ export class CreateStudent {
   // projectId: string;
 
   @Field(() => [String])
-  studyYears: string[];
-
-  @Field(() => [String])
-  semestersId: string[];
+  semesters: string[];
 }

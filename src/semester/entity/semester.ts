@@ -1,8 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Archive } from 'src/archive/entity/archive';
 import { Employee } from 'src/employee/entity/employee';
+import { Level } from 'src/level/entity/level';
 import { Student } from 'src/student/entity/student';
 import {
+  Column,
   Entity,
   ManyToMany,
   ManyToOne,
@@ -17,6 +19,7 @@ export class Semester {
   id: string;
 
   @Field()
+  @Column()
   name: string;
 
   // @Field()
@@ -30,6 +33,7 @@ export class Semester {
   archive: Archive;
 
   @Field()
+  @Column()
   archiveId: string;
 
   @ManyToMany(() => Employee, (employee) => employee.semesters)
@@ -39,4 +43,8 @@ export class Semester {
   @ManyToMany(() => Student, (student) => student.semesters)
   @Field(() => [Student], { nullable: true })
   students: Student[];
+
+  @ManyToMany(() => Level, (level) => level.semesters)
+  @Field(() => [Level], { nullable: true })
+  levels: Level[];
 }

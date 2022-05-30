@@ -40,18 +40,6 @@ export class Project {
   @Field()
   updatedAt: Date;
 
-  // @OneToMany(() => Employee, (employee) => employee.project)
-  // @Field(() => [Employee], { nullable: true })
-  // employees: Employee[];
-
-  @OneToMany(() => Level, (level) => level.project)
-  @Field(() => [Level], { nullable: true })
-  levels: Level[];
-
-  // @OneToMany(() => Student, (student) => student.project)
-  // @Field(() => [Student], { nullable: true })
-  // students: Student[];
-
   @OneToMany(() => StudyYear, (studyYear) => studyYear.project)
   @Field(() => [StudyYear], { nullable: true })
   studyYears: StudyYear[];

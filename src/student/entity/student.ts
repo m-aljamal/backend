@@ -63,15 +63,6 @@ export class Student {
   @Field(() => [Stuabsent])
   absents: Stuabsent[];
 
-  @ManyToMany(() => StudyYear, (studyYear) => studyYear.students)
-  @Field(() => [StudyYear])
-  @JoinTable({
-    name: 'student_study_year',
-    joinColumn: { name: 'student_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'study_year_id', referencedColumnName: 'id' },
-  })
-  studyYears: StudyYear[];
-
   @ManyToMany(() => Semester, (semester) => semester.employees, {
     cascade: true,
   })

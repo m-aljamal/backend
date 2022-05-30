@@ -45,14 +45,6 @@ export class StudyYear {
   @Column({ type: 'timestamp' })
   summerActivityEnd: Date;
 
-  @ManyToMany(() => Employee, (employee) => employee.studyYears)
-  @Field(() => [Employee], { nullable: true })
-  employees: Employee[];
-
-  @ManyToMany(() => Student, (student) => student.studyYears)
-  @Field(() => [Student], { nullable: true })
-  students: Student[];
-
   @ManyToOne(() => Project, (project) => project.studyYears)
   @Field(() => Project)
   project: Project;

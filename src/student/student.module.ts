@@ -1,3 +1,4 @@
+import { SemesterModule } from './../semester/semester.module';
 import { DivisionModule } from './../division/division.module';
 import { LevelModule } from './../level/level.module';
 import { ProjectModule } from './../project/project.module';
@@ -14,7 +15,8 @@ import { StudyYearModule } from 'src/study-year/study-year.module';
     ProjectModule,
     LevelModule,
     DivisionModule,
-    StudyYearModule
+    StudyYearModule,
+    SemesterModule,
   ],
   providers: [StudentResolver, StudentService],
   exports: [StudentService],

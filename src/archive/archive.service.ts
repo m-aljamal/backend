@@ -14,4 +14,10 @@ export class ArchiveService {
   async createArchive(archive: CreateArchive): Promise<Archive> {
     return this.archiveRepo.save(archive);
   }
+
+  async findAllArchives(): Promise<Archive[]> {
+    return this.archiveRepo.find({
+      relations: ['semesters'],
+    });
+  }
 }

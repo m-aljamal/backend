@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Student } from './entity/student';
 import { studentArgs } from './dto/student.args';
 import { StudyYearService } from 'src/study-year/study-year.service';
+import { SemesterService } from 'src/semester/semester.service';
 
 @Injectable()
 export class StudentService {
@@ -12,6 +13,7 @@ export class StudentService {
     @InjectRepository(Student)
     private readonly studentRepo: Repository<Student>,
     private readonly studyYearService: StudyYearService,
+    private readonly semesterService: SemesterService,
   ) {}
 
   async createStudent(student: CreateStudent): Promise<Student> {
@@ -19,18 +21,27 @@ export class StudentService {
     if (newStudent) {
       throw new NotFoundException('الطالب موجود مسبقا');
     }
-    const studyYears = await Promise.all(
-      student.studyYears.map(async (id) => {
-        const studyYear = await this.loadStudyYears(id);
-        if (!studyYear) {
-          throw new NotFoundException('العام الدراسي غير موجود');
+    // const studyYears = await Promise.all(
+    //   student.studyYears.map(async (id) => {
+    //     const studyYear = await this.loadStudyYears(id);
+    //     if (!studyYear) {
+    //       throw new NotFoundException('العام الدراسي غير موجود');
+    //     }
+    //     return studyYear;
+    //   }),
+    // );
+    const semesters = await Promise.all(
+      student.semesters.map(async (id) => {
+        const semester = await this.loadSemesters(id);
+        if (!semester) {
+          throw new NotFoundException('الفصل الدراسي غير موجود');
         }
-        return studyYear;
+        return semester;
       }),
     );
     let createNewStudent = this.studentRepo.create({
       ...student,
-      studyYears,
+      semesters,
     });
     return await this.studentRepo.save(createNewStudent);
   }
@@ -81,7 +92,11 @@ export class StudentService {
 
     return await query.getMany();
   }
-  private async loadStudyYears(id: string) {
-    return await this.studyYearService.findOne(id);
+  // private async loadStudyYears(id: string) {
+  //   return await this.studyYearService.findOne(id);
+  // }
+
+  private async loadSemesters(id: string) {
+    return await this.semesterService.findOne(id);
   }
 }

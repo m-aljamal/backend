@@ -5,7 +5,4 @@ import { Sort } from 'src/utils/types';
 export class LevelArgs {
   @Field(() => Sort, { nullable: true })
   sortBy?: Sort;
-
-  @Field()
-  projectId: string;
 }

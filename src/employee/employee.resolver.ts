@@ -76,7 +76,7 @@ export class EmployeeResolver {
   @Mutation(() => Employee)
   async createEmployee(
     @Args('employee') employee: EmployeeDto,
-  ): Promise<Employee> {
+  )  {
     return await this.employeeService.createEmployee(employee);
   }
 

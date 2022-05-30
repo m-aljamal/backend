@@ -40,12 +40,12 @@ export class EmployeeService {
 
     query.leftJoinAndSelect('employee.levels', 'levels');
     query.leftJoinAndSelect('employee.divisions', 'divisions');
-    query.leftJoinAndSelect('employee.studyYears', 'studyYears');
+    query.leftJoinAndSelect('employee.semesters', 'semesters');
 
     return await query.getMany();
   }
 
-  async createEmployee(employee: EmployeeDto): Promise<Employee> {
+  async createEmployee(employee: EmployeeDto) {
     let newEmployee = await this.EmpRepo.createQueryBuilder('employee')
       .where('employee.username = :username', { username: employee.username })
       .orWhere('employee.name = :name', { name: employee.name })
@@ -77,23 +77,27 @@ export class EmployeeService {
         }),
       );
     }
-    const studyYears = await Promise.all(
-      employee.studyYears.map(async (id) => {
-        const studyYear = await this.loadStudyYears(id);
-        if (!studyYear) {
-          throw new BadRequestException('السنة الدراسية غير موجودة');
+
+    const semesters = await Promise.all(
+      employee.semesters.map(async (id) => {
+        const semester = await this.loadSemesters(id);
+        if (!semester) {
+          throw new BadRequestException('الفصل غير موجود');
         }
-        return studyYear;
+        return semester;
       }),
     );
-    // const semesters =
+
     newEmployee = this.EmpRepo.create({
       ...employee,
-      studyYears,
+
       password: hashPassword(employee.password),
       levels,
       divisions,
+      semesters,
     });
+    console.log(newEmployee);
+
     return await this.EmpRepo.save(newEmployee);
   }
 
@@ -197,39 +201,34 @@ export class EmployeeService {
   }
 
   async updateEmployee(id: string, updateEmployeeInput: UpdateEmployeeInput) {
-    let employee = await this.EmpRepo.findOne({
-      where: { id },
-      relations: ['project', 'levels', 'divisions', 'studyYears'],
-    });
-
-    if (!employee) {
-      throw new NotFoundException('الموظف غير موجود');
-    }
-
-    let newStudyYears = [];
-    if (updateEmployeeInput.studyYears) {
-      newStudyYears = await Promise.all(
-        updateEmployeeInput.studyYears.map(async (id) => {
-          const studyYear = await this.loadStudyYears(id);
-          if (!studyYear) {
-            throw new BadRequestException('السنة الدراسية غير موجودة');
-          }
-
-          return studyYear;
-        }),
-      );
-    }
-
-    const studyYears = [...employee.studyYears, ...newStudyYears];
-    updateEmployeeInput.password
-      ? (updateEmployeeInput.password = hashPassword(
-          updateEmployeeInput.password,
-        ))
-      : null;
-    updateEmployeeInput.studyYears = studyYears;
-    Object.assign(employee, updateEmployeeInput);
-
-    return await this.EmpRepo.save(employee);
+    // let employee = await this.EmpRepo.findOne({
+    //   where: { id },
+    //   relations: ['project', 'levels', 'divisions', 'studyYears'],
+    // });
+    // if (!employee) {
+    //   throw new NotFoundException('الموظف غير موجود');
+    // }
+    // let newStudyYears = [];
+    // if (updateEmployeeInput.studyYears) {
+    //   newStudyYears = await Promise.all(
+    //     updateEmployeeInput.studyYears.map(async (id) => {
+    //       const studyYear = await this.loadStudyYears(id);
+    //       if (!studyYear) {
+    //         throw new BadRequestException('السنة الدراسية غير موجودة');
+    //       }
+    //       return studyYear;
+    //     }),
+    //   );
+    // }
+    // const studyYears = [...employee.studyYears, ...newStudyYears];
+    // updateEmployeeInput.password
+    //   ? (updateEmployeeInput.password = hashPassword(
+    //       updateEmployeeInput.password,
+    //     ))
+    //   : null;
+    // updateEmployeeInput.studyYears = studyYears;
+    // Object.assign(employee, updateEmployeeInput);
+    // return await this.EmpRepo.save(employee);
   }
 
   private async loadLevels(id: string) {
@@ -242,5 +241,8 @@ export class EmployeeService {
 
   private async loadStudyYears(id: string) {
     return await this.studyYearService.findOne(id);
+  }
+  private async loadSemesters(id: string) {
+    return this.semesterSerivce.findOne(id);
   }
 }

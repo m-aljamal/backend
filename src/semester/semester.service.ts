@@ -14,4 +14,14 @@ export class SemesterService {
   async createSemester(semester: CreateSemester): Promise<Semester> {
     return this.semesterRepo.save(semester);
   }
+
+  async findOne(id: string): Promise<Semester> {
+    return this.semesterRepo.findOne(id);
+  }
+
+  async findAllSemesters(): Promise<Semester[]> {
+    return await this.semesterRepo.find({
+      relations: ['employees', 'levels'],
+    });
+  }
 }

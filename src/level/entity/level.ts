@@ -4,6 +4,7 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -11,6 +12,7 @@ import {
 } from 'typeorm';
 import { Student } from 'src/student/entity/student';
 import { Employee } from 'src/employee/entity/employee';
+import { Semester } from 'src/semester/entity/semester';
 
 @ObjectType()
 @Entity()
@@ -35,15 +37,18 @@ export class Level {
   @Field(() => [Student], { nullable: true })
   students: Student[];
 
-  @ManyToOne(() => Project, (project) => project.levels)
-  @Field(() => Project, { nullable: true })
-  project: Project;
-
-  @Field(() => String, { nullable: true })
-  @Column({ nullable: true })
-  projectId: string;
-
   @ManyToMany(() => Employee, (employee) => employee.levels)
   @Field(() => [Employee], { nullable: true })
   employees: Employee[];
+
+  @ManyToMany(() => Semester, (semester) => semester.levels, {
+    cascade: true,
+  })
+  @Field(() => [Semester], { nullable: true })
+  @JoinTable({
+    name: 'level_semester',
+    joinColumn: { name: 'level_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'semester_id', referencedColumnName: 'id' },
+  })
+  semesters: Semester[];
 }
