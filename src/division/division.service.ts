@@ -26,11 +26,11 @@ export class DivisionService {
     return this.divisionRepo.save(division);
   }
 
-  async findAllDivision(levelId: string) {
+  async findAllDivision() {
     return this.divisionRepo.find({
       // order: { createdAt: divisionArgs.sortBy },
-      where: { levelId: levelId },
-      relations: ['students'],
+     
+      relations: ['students','employees'],
     });
   }
   async findDivisionBySchoolId(id: string) {

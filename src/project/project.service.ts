@@ -18,7 +18,6 @@ export class ProjectService {
 
   findAll(projectArgs: ProjectArgs) {
     return this.projectRepo.find({
-      relations: ['employees', 'students'],
       order: { createdAt: projectArgs.sortBy },
     });
   }
@@ -40,7 +39,6 @@ export class ProjectService {
   findOne(id: string) {
     const project = this.projectRepo.findOne({
       where: { id },
-      relations: ['employees'],
     });
     if (!project) {
       throw new NotFoundException('لم يتم العثور على المشروع');

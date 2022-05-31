@@ -11,14 +11,10 @@ import {
 import { Level } from './entity/level';
 import { LevelService } from './level.service';
 import { LevelArgs } from './dto/level.args';
-import { Project } from 'src/project/entity/project';
 
 @Resolver(() => Level)
 export class LevelResolver {
-  constructor(
-    private readonly levelService: LevelService,
-    private readonly projectService: ProjectService,
-  ) {}
+  constructor(private readonly levelService: LevelService) {}
 
   @Mutation(() => Level, { name: 'createLevel' })
   createLevel(@Args('level') level: CreateLevel) {
@@ -34,9 +30,4 @@ export class LevelResolver {
   async findStudentsByLevel(@Args() levelArgs: LevelArgs): Promise<Level[]> {
     return this.levelService.findStudentsByLevel(levelArgs);
   }
-
-  // @ResolveField(() => Level)
-  // async project(@Parent() level: Level): Promise<Project> {
-  //   return await this.projectService.findOne(level.projectId);
-  // }
 }

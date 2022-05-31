@@ -24,8 +24,8 @@ export class DivisionResolver {
   }
 
   @Query(() => [Division], { name: 'findAllDivision' })
-  async findAllDivision(@Args('levelId') levelId: string) {
-    return await this.divisionService.findAllDivision(levelId);
+  async findAllDivision() {
+    return await this.divisionService.findAllDivision();
   }
 
   @ResolveField(() => Division)

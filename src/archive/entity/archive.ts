@@ -3,6 +3,7 @@ import { Project } from 'src/project/entity/project';
 import { Semester } from 'src/semester/entity/semester';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -31,4 +32,8 @@ export class Archive {
   @OneToMany(() => Semester, (semester) => semester.archive, { nullable: true })
   @Field(() => [Semester], { nullable: true })
   semesters: Semester[];
+
+  @CreateDateColumn({ type: 'timestamp' })
+  @Field()
+  createdAt: Date;
 }
