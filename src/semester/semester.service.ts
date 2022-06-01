@@ -1,3 +1,4 @@
+import { FindSemesterArgs } from './dto/find.semester.args';
 import { CreateSemester } from './dto/create-semester';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,9 +20,26 @@ export class SemesterService {
     return this.semesterRepo.findOne(id);
   }
 
-  async findAllSemesters(): Promise<Semester[]> {
-    return await this.semesterRepo.find({
-      relations: ['employees', 'levels'],
+  async findAllSemesters(args: FindSemesterArgs): Promise<Semester[]> {
+    const query = this.semesterRepo.createQueryBuilder('semester');
+    query.where('semester.archiveId = :archiveId', {
+      archiveId: args.archiveId,
     });
+    if (args.name) {
+      query.andWhere('semester.name = :name', { name: args.name });
+    }
+    if (args.sortBy) {
+      query.orderBy(`semester.createdAt`, args.sortBy);
+    }
+
+    query.leftJoinAndSelect('semester.archive', 'archive');
+    query.leftJoinAndSelect('semester.employees', 'employees');
+    query.leftJoinAndSelect('semester.levels', 'levels');
+    query.leftJoinAndSelect('levels.divisions', 'divisions');
+    query.leftJoinAndSelect('divisions.students', 'students');
+     
+    console.log(await query.getMany());
+
+    return await query.getMany();
   }
 }

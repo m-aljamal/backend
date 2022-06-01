@@ -27,7 +27,7 @@ export class ArchiveService {
     if (args.sortBy) {
       query.orderBy(`archive.createdAt`, args.sortBy);
     }
-
+    query.leftJoinAndSelect('archive.semesters', 'semester');
     return await query.getMany();
   }
 }

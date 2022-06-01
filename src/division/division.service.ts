@@ -27,11 +27,14 @@ export class DivisionService {
   }
 
   async findAllDivision() {
-    return this.divisionRepo.find({
-      // order: { createdAt: divisionArgs.sortBy },
-     
-      relations: ['students','employees'],
-    });
+    const query = this.divisionRepo.createQueryBuilder('division');
+    // join employee_division relation
+
+    // relation employee_division
+    query.leftJoin('employee_division', 'divisions', 'division.id = employee_division.division_id');
+
+    console.log(await query.getMany());
+    return await query.getMany();
   }
   async findDivisionBySchoolId(id: string) {
     return this.divisionRepo.findOne({
